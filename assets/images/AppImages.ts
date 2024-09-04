@@ -17,6 +17,10 @@ export const AppImages={
     phone : require('../images/Phone-Fill.png'),
     leftnav : require('../images/Chevron-Left.png'),
     passchange : require('../images/passchange.png'),
+    error : require('../images/error.png'),
+    success : require('../images/success.png'),
+    info : require('../images/info.png'),
+    warning : require('../images/warning.png'),
     
     
 }

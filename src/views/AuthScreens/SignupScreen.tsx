@@ -17,10 +17,39 @@ import TextFields from '../../components/TextFields/TextFields';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
 import Loginbtn from '../../components/Buttons/Loginbtn';
 import {useNavigation} from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const SignupScreen = () => {
   const navigation: any = useNavigation();
+  const [Name, Setname] = useState<string>('');
+  const [Email, SetEmail] = useState<string>('');
+  const [Password, SetPassword] = useState<string>('');
+  const [Loading, SetLoading] = useState<boolean>(false);
   const [secureEntry, setSecureEntry] = useState<boolean>(true);
+
+  const handleSignup = async () => {
+    try {
+      if (Email && Password) {
+        SetLoading(true);
+        const isuserCreated = await auth().createUserWithEmailAndPassword(
+          Email,
+          Password,
+        );
+        firestore().collection('Users').doc(isuserCreated?.user?.uid).set({
+          email: isuserCreated?.user?.email,
+          uid: isuserCreated?.user?.uid,
+          name: Name,
+        });
+        navigation.navigate('LoginScreen');
+        SetLoading(false);
+      } else {
+        console.log('Auth failed');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.main}>
@@ -58,16 +87,25 @@ const SignupScreen = () => {
                   </Text>
                 </Text>
                 <Text style={styles.desc}>Unlock endless journeys ahead! </Text>
-                <TextFields mainStyle={{marginBottom: 10}} Placeholder="Name" />
+                <TextFields
+                  value={Name}
+                  onChangeText={(value: any) => Setname(value)}
+                  mainStyle={{marginBottom: 10}}
+                  Placeholder="Name"
+                />
                 <TextFields
                   mainStyle={{marginBottom: 10}}
                   Placeholder="Email"
+                  value={Email}
+                  onChangeText={(value: any) => SetEmail(value)}
                 />
                 <TextFields
                   secureTextEntry={secureEntry}
                   onhide={() => {
                     setSecureEntry(!secureEntry);
                   }}
+                  value={Password}
+                  onChangeText={(value: any) => SetPassword(value)}
                   ispassword
                   Placeholder="Password"
                 />
@@ -101,14 +139,31 @@ const SignupScreen = () => {
                   btnStyle={{backgroundColor: AppBaseColor.blue}}
                   title="Sign up"
                   mainStyle={{marginTop: 20}}
+                  onpress={() => handleSignup()}
                 />
-                <View style={{justifyContent:'center',alignItems:'center',marginTop:20,marginHorizontal:10,}}>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 20,
+                    marginHorizontal: 10,
+                  }}>
                   <Text style={styles.txt}>
                     By clicking{' '}
-                    <Text style={{color:AppBaseColor.blue}}>
+                    <Text style={{color: AppBaseColor.blue}}>
                       'Sign Up'
-                      <Text style={{color:AppBaseColor.lightgreen}}>
-                        , you agree to our <Text style={{color:AppBaseColor.lightblue,marginTop:5}}>{"\n'Terms'\t"}<Text style={{color:AppBaseColor.lightgreen}}>{"and\t"}<Text style={{color:AppBaseColor.lightblue}}>{"'Policies'"}</Text></Text></Text>
+                      <Text style={{color: AppBaseColor.lightgreen}}>
+                        , you agree to our{' '}
+                        <Text
+                          style={{color: AppBaseColor.lightblue, marginTop: 5}}>
+                          {"\n'Terms'\t"}
+                          <Text style={{color: AppBaseColor.lightgreen}}>
+                            {'and\t'}
+                            <Text style={{color: AppBaseColor.lightblue}}>
+                              {"'Policies'"}
+                            </Text>
+                          </Text>
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -150,7 +205,7 @@ const styles = StyleSheet.create({
     fontSize: AppFontSize.smalltxt,
     color: AppBaseColor.lightgreen,
     fontFamily: Fonts.outfitRegular,
-    textAlign:'center',
-    lineHeight:20
+    textAlign: 'center',
+    lineHeight: 20,
   },
 });

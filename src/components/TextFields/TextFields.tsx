@@ -19,7 +19,7 @@ interface TextFields {
   ispassword?: boolean;
   secureTextEntry?: any;
   value?: string;
-  onChangeText?: () => void;
+  onChangeText?: any;
   onhide?: any;
 }
 

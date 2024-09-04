@@ -1,3 +1,4 @@
+
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -22,21 +23,30 @@ const AuthStack = () => {
 
   useEffect(() => {
     const checkOnboarding = async () => {
-      const hasCompletedOnBoarding = await AsyncStorage.getItem('onBoardingCompleted');
-      if (hasCompletedOnBoarding === null) {
-        setIsFirstLaunch(true);
-      } else {
-        setIsFirstLaunch(false);
+      try {
+        const hasCompletedOnBoarding = await AsyncStorage.getItem('onBoardingCompleted');
+        console.log('onBoardingCompleted value:', hasCompletedOnBoarding);
+        if (hasCompletedOnBoarding != null) {
+          setIsFirstLaunch(true);
+        } else {
+          setIsFirstLaunch(false);
+        }
+      } catch (error) {
+        console.error('Error checking onboarding:', error);
       }
     };
     checkOnboarding();
   }, []);
 
   const completeOnboarding = async () => {
-    await AsyncStorage.setItem('onBoardingCompleted', 'true');
-    setIsFirstLaunch(false);
+    try {
+      await AsyncStorage.setItem('onBoardingCompleted', 'true');
+      setIsFirstLaunch(false);
+      console.log('Onboarding completed and saved to AsyncStorage');
+    } catch (error) {
+      console.error('Error setting onboarding completed:', error);
+    }
   };
-
   if (isFirstLaunch === null) {
     return (
       <View style={styles.loadingContainer}>
@@ -47,7 +57,7 @@ const AuthStack = () => {
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      {isFirstLaunch && (
+      {!isFirstLaunch && (
         <Stack.Screen name="OnBoarding">
           {props => <OnBoarding {...props} onComplete={completeOnboarding} />}
         </Stack.Screen>

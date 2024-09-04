@@ -16,11 +16,51 @@ import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
 import TextFields from '../../components/TextFields/TextFields';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
 import Loginbtn from '../../components/Buttons/Loginbtn';
-import {useNavigation} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import NotifyToast from '../../components/NotifyToast/NotifyToast';
 
 const LoginScreen = () => {
   const navigation: any = useNavigation();
+  const [Email, SetEmail] = useState<string>('');
+  const [Password, SetPassword] = useState<string>('');
+  const [Loading, SetLoading] = useState<boolean>(false);
   const [secureEntry, setSecureEntry] = useState<boolean>(true);
+  const [showToast,setShowToast]=useState<boolean>(false)
+  const [Toastmsg,setToastmsg]=useState<any>('')
+  const visibleToast = (message:any) => {
+    setToastmsg(message)
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000); 
+  };
+  const handleLogin = async () => {
+    try {
+      if (Email != '' && Password != '') {
+        const isUserSignin = await auth().signInWithEmailAndPassword(
+          Email,
+          Password,
+        );
+        const data = {
+          email: Email,
+          passsword: Password,
+        };
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'HomeStack'}],
+          }),
+        );
+        SetEmail('');
+        SetPassword('');
+      } else {
+        console.log('Signin Cancelled');
+      }
+    } catch (err : any) {
+      visibleToast(err?.message)
+    }
+  };
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.main}>
@@ -61,10 +101,14 @@ const LoginScreen = () => {
                   Discover the world with Every Sign In.{' '}
                 </Text>
                 <TextFields
+                  value={Email}
+                  onChangeText={(value: any) => SetEmail(value)}
                   mainStyle={{marginBottom: 10}}
                   Placeholder="Email"
                 />
                 <TextFields
+                  value={Password}
+                  onChangeText={(value: any) => SetPassword(value)}
                   secureTextEntry={secureEntry}
                   onhide={() => {
                     setSecureEntry(!secureEntry);
@@ -91,6 +135,7 @@ const LoginScreen = () => {
                   btnStyle={{backgroundColor: AppBaseColor.blue}}
                   title="Sign in"
                   mainStyle={{marginTop: 20}}
+                  onpress={() => handleLogin()}
                 />
                 <View
                   style={{
@@ -115,6 +160,13 @@ const LoginScreen = () => {
             </View>
           </ScrollView>
         </ImageBackground>
+      </View>
+      <View style={{justifyContent:'center',alignItems:'center'}}>
+        <NotifyToast
+        message={Toastmsg}
+        visible={showToast}
+        type={'ERROR'}
+        />
       </View>
     </SafeAreaView>
   );
