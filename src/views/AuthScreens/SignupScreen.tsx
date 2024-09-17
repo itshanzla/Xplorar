@@ -1,4 +1,5 @@
 import {
+  Image,
   ImageBackground,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -7,7 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import StatusBarNormal from '../../components/StatusBar/StatusBarNormal';
 import StatusBarTrans from '../../components/StatusBar/StatusBarTrans';
 import {AppImages} from '../../../assets/images/AppImages';
@@ -19,6 +20,7 @@ import Loginbtn from '../../components/Buttons/Loginbtn';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import * as animateable from 'react-native-animatable';
 
 const SignupScreen = () => {
   const navigation: any = useNavigation();
@@ -27,10 +29,14 @@ const SignupScreen = () => {
   const [Password, SetPassword] = useState<string>('');
   const [Loading, SetLoading] = useState<boolean>(false);
   const [secureEntry, setSecureEntry] = useState<boolean>(true);
+  const [showState, setShowState] = useState(false);
+  const [ValidEmail, setisvalidEmail] = useState(false);
 
   const handleSignup = async () => {
     try {
-      if (Email && Password) {
+      if (Email.length === 0) {
+        setShowState(true);
+      } else if (Email && Password) {
         SetLoading(true);
         const isuserCreated = await auth().createUserWithEmailAndPassword(
           Email,
@@ -49,6 +55,39 @@ const SignupScreen = () => {
     } catch (err) {
       console.error(err);
     }
+  };
+  useEffect(() => {
+    isValidEmail();
+  }, [Email]);
+  const isValidEmail = () => {
+    var re =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (re.test(Email)) {
+      setisvalidEmail(true);
+    } else {
+      setisvalidEmail(false);
+    }
+    // return re.match(email);
+  };
+  const [validations, setValidations] = useState({
+    minLength: false,
+    hasNumber: false,
+    hasLetter: false,
+  });
+  const validatePassword = (pwd: any) => {
+    const minLength = pwd.length >= 8;
+    const hasNumber = /\d/.test(pwd);
+    const hasLetter = /[A-Z]/.test(pwd);
+    setValidations({minLength, hasNumber, hasLetter});
+  };
+  const handlePasswordChange = (pwd: any) => {
+    SetPassword(pwd);
+    validatePassword(pwd);
+  };
+  const isvalidpassword = () => {
+    let re =
+      /^(?=.*[0-9])(?=.*[A-Z])[a-zA-Z0-9!@#$_&-+-()/="':;?,.<>%^&*]{8,100}$/;
+    return re.test(Password);
   };
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -99,16 +138,168 @@ const SignupScreen = () => {
                   value={Email}
                   onChangeText={(value: any) => SetEmail(value)}
                 />
+                {showState == true && Email.length == 0 ? (
+                  <View
+                    style={{
+                      alignSelf: 'flex-start',
+                      paddingLeft: '6%',
+                      marginTop: -5,
+                      marginBottom: 5,
+                    }}>
+                    <animateable.Text
+                      easing={'ease-in'}
+                      duration={700}
+                      animation={'fadeInLeft'}
+                      style={styles.textValid}>
+                      Email is Required
+                    </animateable.Text>
+                  </View>
+                ) : null}
+                {Email.length > 0 && (
+                  <View style={{alignSelf: 'flex-start'}}>
+                    {ValidEmail ? (
+                      <animateable.View
+                        animation={'fadeInRight'}
+                        duration={1200}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          paddingLeft: '6%',
+                          marginTop: -5,
+                          marginBottom: 5,
+                        }}>
+                        <Image
+                          tintColor={AppBaseColor.blue}
+                          style={styles.image}
+                          resizeMode="contain"
+                          source={AppImages.check}
+                        />
+                        <Text style={[styles.validationText, {color: 'black'}]}>
+                          Email is Valid
+                        </Text>
+                      </animateable.View>
+                    ) : (
+                      <animateable.View
+                        animation={'fadeInRight'}
+                        duration={1200}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          paddingLeft: '6%',
+                          marginTop: -5,
+                          marginBottom: 5,
+                        }}>
+                        <Image
+                          tintColor={'red'}
+                          style={styles.image}
+                          resizeMode="contain"
+                          source={AppImages.cross}
+                        />
+                        <Text style={[styles.validationText, {color: 'black'}]}>
+                          Email is not Valid
+                        </Text>
+                      </animateable.View>
+                    )}
+                  </View>
+                )}
                 <TextFields
                   secureTextEntry={secureEntry}
                   onhide={() => {
                     setSecureEntry(!secureEntry);
                   }}
                   value={Password}
-                  onChangeText={(value: any) => SetPassword(value)}
+                  onChangeText={handlePasswordChange}
                   ispassword
                   Placeholder="Password"
                 />
+                {showState == true && Password.length == 0 ? (
+                  <View
+                    style={{
+                      alignSelf: 'flex-start',
+                      paddingLeft: '6%',
+                      marginTop: 5,
+                      marginBottom: 10,
+                    }}>
+                    <animateable.Text
+                      easing={'ease-in'}
+                      duration={700}
+                      animation={'fadeInLeft'}
+                      style={styles.textValid}>
+                      Password is Required
+                    </animateable.Text>
+                  </View>
+                ) : null}
+                {Password.length > 0 && (
+                  <View style={styles.validationContainer}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <animateable.Image
+                        duration={1400}
+                        animation={'fadeInLeft'}
+                        tintColor={
+                          validations.minLength ? AppBaseColor.blue : 'red'
+                        }
+                        style={styles.image}
+                        resizeMode="contain"
+                        source={
+                          validations.minLength
+                            ? AppImages.check
+                            : AppImages.cross
+                        }
+                      />
+                      <animateable.Text
+                        duration={1400}
+                        animation={'fadeInLeft'}
+                        style={[styles.validationText, {color: 'black'}]}>
+                        Minimum 8 characters
+                      </animateable.Text>
+                    </View>
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <animateable.Image
+                        duration={1600}
+                        animation={'fadeInLeft'}
+                        tintColor={
+                          validations.minLength ? AppBaseColor.blue : 'red'
+                        }
+                        style={styles.image}
+                        resizeMode="contain"
+                        source={
+                          validations.minLength
+                            ? AppImages.check
+                            : AppImages.cross
+                        }
+                      />
+                      <animateable.Text
+                        duration={1600}
+                        animation={'fadeInLeft'}
+                        style={[styles.validationText, {color: 'black'}]}>
+                        Atleast lowercase or uppercase letters
+                      </animateable.Text>
+                    </View>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <animateable.Image
+                        duration={1800}
+                        animation={'fadeInLeft'}
+                        tintColor={
+                          validations.minLength ? AppBaseColor.blue : 'red'
+                        }
+                        style={styles.image}
+                        resizeMode="contain"
+                        source={
+                          validations.minLength
+                            ? AppImages.check
+                            : AppImages.cross
+                        }
+                      />
+                      <animateable.Text
+                        duration={1800}
+                        animation={'fadeInLeft'}
+                        style={[styles.validationText, {color: 'black'}]}>
+                        Atleast 1 number (1-9)
+                      </animateable.Text>
+                    </View>
+                  </View>
+                )}
                 <View
                   style={{
                     justifyContent: 'flex-end',
@@ -207,5 +398,25 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.outfitRegular,
     textAlign: 'center',
     lineHeight: 20,
+  },
+  validationText: {
+    fontSize: 14,
+    marginVertical: 4,
+    marginLeft: 5,
+    fontFamily: Fonts.outfitRegular,
+  },
+  image: {
+    width: 16,
+    height: 16,
+  },
+  textValid: {
+    fontSize: 14,
+    fontFamily: Fonts.outfitRegular,
+    color: 'red',
+  },
+  validationContainer: {
+    alignSelf: 'flex-start',
+    paddingLeft: '6%',
+    marginTop: 5,
   },
 });

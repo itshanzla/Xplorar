@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {AppImages} from '../../../assets/images/AppImages';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {AppFontSize} from '../../../assets/Texts/Fontsize';
@@ -27,15 +27,15 @@ GoogleSignin.configure({
 const LoginLanding = () => {
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
-  const [showToast,setShowToast]=useState<boolean>(false)
-  const [Toastmsg,setToastmsg]=useState<any>('')
-  const visibleToast = (message:any) => {
-    setToastmsg(message)
-    setShowToast(true);
-    setTimeout(() => {
-      setShowToast(false);
-    }, 3000); 
-  };
+  const [showToast, setShowToast] = useState<boolean>(false);
+  // const [Toastmsg,setToastmsg]=useState<any>('')
+  // const visibleToast = (message:any) => {
+  //   setToastmsg(message)
+  //   setShowToast(true);
+  //   setTimeout(() => {
+  //     setShowToast(false);
+  //   }, 3000);
+  // };
   const onGoogleButtonPress = async () => {
     try {
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
@@ -59,8 +59,9 @@ const LoginLanding = () => {
         }),
       );
       return auth().signInWithCredential(googleCredentials);
-    } catch (err : any) {
-      visibleToast(err?.message)
+    } catch (err: any) {
+      // visibleToast(err?.message)
+      console.error(err);
     }
   };
 
@@ -129,13 +130,12 @@ const LoginLanding = () => {
           title="Login With Apple"
         />
       </View>
-      <View style={{justifyContent:'center',alignItems:'center'}}>
-
-      <NotifyToast
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        {/* <NotifyToast
       message={Toastmsg}
       visible={showToast}
       type={'ERROR'}
-/>
+/> */}
       </View>
     </View>
   );

@@ -1,4 +1,5 @@
 import {
+  Image,
   ImageBackground,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -7,7 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import StatusBarNormal from '../../components/StatusBar/StatusBarNormal';
 import StatusBarTrans from '../../components/StatusBar/StatusBarTrans';
 import {AppImages} from '../../../assets/images/AppImages';
@@ -18,7 +19,8 @@ import {AppBaseColor} from '../../../assets/Colors/Colors';
 import Loginbtn from '../../components/Buttons/Loginbtn';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
-import NotifyToast from '../../components/NotifyToast/NotifyToast';
+import * as animateable from 'react-native-animatable';
+// import NotifyToast from '../../components/NotifyToast/NotifyToast';
 
 const LoginScreen = () => {
   const navigation: any = useNavigation();
@@ -26,18 +28,35 @@ const LoginScreen = () => {
   const [Password, SetPassword] = useState<string>('');
   const [Loading, SetLoading] = useState<boolean>(false);
   const [secureEntry, setSecureEntry] = useState<boolean>(true);
-  const [showToast,setShowToast]=useState<boolean>(false)
-  const [Toastmsg,setToastmsg]=useState<any>('')
-  const visibleToast = (message:any) => {
-    setToastmsg(message)
-    setShowToast(true);
-    setTimeout(() => {
-      setShowToast(false);
-    }, 3000); 
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [ValidEmail, setisvalidEmail] = useState(false);
+  const [showState, setShowState] = useState(false);
+  // const [Toastmsg,setToastmsg]=useState<any>('')
+  // const visibleToast = (message:any) => {
+  //   setToastmsg(message)
+  //   setShowToast(true);
+  //   setTimeout(() => {
+  //     setShowToast(false);
+  //   }, 3000);
+  // };
+  useEffect(() => {
+    isValidEmail();
+  }, [Email]);
+  const isValidEmail = () => {
+    var re =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (re.test(Email)) {
+      setisvalidEmail(true);
+    } else {
+      setisvalidEmail(false);
+    }
+    // return re.match(email);
   };
   const handleLogin = async () => {
     try {
-      if (Email != '' && Password != '') {
+      if (Email.length === 0) {
+        setShowState(true);
+      } else if (Email != '' && Password != '') {
         const isUserSignin = await auth().signInWithEmailAndPassword(
           Email,
           Password,
@@ -57,8 +76,9 @@ const LoginScreen = () => {
       } else {
         console.log('Signin Cancelled');
       }
-    } catch (err : any) {
-      visibleToast(err?.message)
+    } catch (err: any) {
+      // visibleToast(err?.message)
+      console.error(err);
     }
   };
   return (
@@ -106,6 +126,24 @@ const LoginScreen = () => {
                   mainStyle={{marginBottom: 10}}
                   Placeholder="Email"
                 />
+                {showState == true && Email.length == 0 ? (
+                  <View
+                    style={{
+                      alignSelf: 'flex-start',
+                      paddingLeft: '6%',
+                      marginTop: -5,
+                      marginBottom: 5,
+                    }}>
+                    <animateable.Text
+                      easing={'ease-in'}
+                      duration={700}
+                      animation={'fadeInLeft'}
+                      style={styles.textValid}>
+                      Email is Required
+                    </animateable.Text>
+                  </View>
+                ) : null}
+                
                 <TextFields
                   value={Password}
                   onChangeText={(value: any) => SetPassword(value)}
@@ -116,6 +154,23 @@ const LoginScreen = () => {
                   ispassword
                   Placeholder="Password"
                 />
+                {showState == true && Password.length == 0 ? (
+                  <View
+                    style={{
+                      alignSelf: 'flex-start',
+                      paddingLeft: '6%',
+                      marginTop: 5,
+                      marginBottom: 10,
+                    }}>
+                    <animateable.Text
+                      easing={'ease-in'}
+                      duration={700}
+                      animation={'fadeInLeft'}
+                      style={styles.textValid}>
+                      Password is Required
+                    </animateable.Text>
+                  </View>
+                ) : null}
                 <View
                   style={{
                     justifyContent: 'flex-end',
@@ -161,13 +216,13 @@ const LoginScreen = () => {
           </ScrollView>
         </ImageBackground>
       </View>
-      <View style={{justifyContent:'center',alignItems:'center'}}>
+      {/* <View style={{justifyContent:'center',alignItems:'center'}}>
         <NotifyToast
         message={Toastmsg}
         visible={showToast}
         type={'ERROR'}
         />
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };
@@ -201,4 +256,71 @@ const styles = StyleSheet.create({
     color: AppBaseColor.lightgreen,
     fontFamily: Fonts.outfitRegular,
   },
+  validationText: {
+    fontSize: 14,
+    marginVertical: 4,
+    marginLeft: 5,
+    fontFamily: Fonts.outfitRegular,
+  },
+  image: {
+    width: 16,
+    height: 16,
+  },
+  textValid: {
+    fontSize: 14,
+    fontFamily: Fonts.outfitRegular,
+    color: 'red',
+  },
+  validationContainer: {
+    alignSelf: 'flex-start',
+    paddingLeft: '6%',
+    marginTop: 5,
+  },
 });
+{/* {Email.length > 0 && (
+                  <View style={{alignSelf: 'flex-start'}}>
+                    {ValidEmail ? (
+                      <animateable.View
+                        animation={'fadeInRight'}
+                        duration={1200}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          paddingLeft: '6%',
+                          marginTop: -5,
+                          marginBottom: 5,
+                        }}>
+                        <Image
+                          tintColor={AppBaseColor.blue}
+                          style={styles.image}
+                          resizeMode="contain"
+                          source={AppImages.check}
+                        />
+                        <Text style={[styles.validationText, {color: 'black'}]}>
+                          Email is Valid
+                        </Text>
+                      </animateable.View>
+                    ) : (
+                      <animateable.View
+                        animation={'fadeInRight'}
+                        duration={1200}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          paddingLeft: '6%',
+                          marginTop: -5,
+                          marginBottom: 5,
+                        }}>
+                        <Image
+                          tintColor={'red'}
+                          style={styles.image}
+                          resizeMode="contain"
+                          source={AppImages.cross}
+                        />
+                        <Text style={[styles.validationText, {color: 'black'}]}>
+                          Email is not Valid
+                        </Text>
+                      </animateable.View>
+                    )}
+                  </View>
+                )} */}

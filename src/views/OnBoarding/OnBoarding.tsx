@@ -61,7 +61,7 @@ const OnBoarding = ({onComplete}: OnBoarding) => {
         )}
         onViewableItemsChanged={ViewableItemsChanged}
         viewabilityConfig={viewConfig}
-        scrollEventThrottle={32}
+        scrollEventThrottle={16}
         ref={slideref}
         keyExtractor={(item): any => item?.id}
       />

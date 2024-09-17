@@ -21,6 +21,8 @@ export const AppImages={
     success : require('../images/success.png'),
     info : require('../images/info.png'),
     warning : require('../images/warning.png'),
+    check : require('../images/check.png'),
+    cross : require('../images/cross.png'),
     
     
 }

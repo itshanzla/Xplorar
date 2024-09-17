@@ -12,6 +12,7 @@ import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {AppImages} from '../../../assets/images/AppImages';
 import OnBoardingData from './OnBoardingData';
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import * as animateable from 'react-native-animatable'
 interface Fluidbutton{
   percentage?:any,
   scrollTo?:any,
@@ -27,7 +28,8 @@ const Fluidbutton = ({percentage,scrollTo,currentIndex,onPress}:Fluidbutton) => 
   const circumference = 2 * Math.PI * radius;
   const progressAnimation : any = useRef(new Animated.Value(0)).current;
   const progressRef: any = useRef(null);
-  const navigation : any = useNavigation()
+  const navigation : any = useNavigation();
+  const AnimateableBtn : any = animateable.createAnimatableComponent(TouchableOpacity)
   const Animation : any = (toValue: any) => {
     return Animated.timing(progressAnimation, {
       toValue,
@@ -76,21 +78,21 @@ const Fluidbutton = ({percentage,scrollTo,currentIndex,onPress}:Fluidbutton) => 
         </G>
       </Svg>
       {currentIndex < OnBoardingData.length - 1 ?
-      <TouchableOpacity onPress={scrollTo} activeOpacity={0.6} style={styles.btn}>
+      <AnimateableBtn duration={1500} animation={'pulse'} onPress={scrollTo} activeOpacity={0.6} style={styles.btn}>
       <Image
         tintColor={'white'}
         style={styles.img}
         source={AppImages.arrowright}
       />
-    </TouchableOpacity>
+    </AnimateableBtn>
     :
-    <TouchableOpacity onPress={onPress} activeOpacity={0.6} style={styles.btn}>
+    <AnimateableBtn duration={1500} animation={'pulse'} onPress={onPress} activeOpacity={0.6} style={styles.btn}>
         <Image
         tintColor={'white'}
         style={styles.img}
         source={AppImages.arrowright}
       />
-      </TouchableOpacity>
+      </AnimateableBtn>
 
       }
       

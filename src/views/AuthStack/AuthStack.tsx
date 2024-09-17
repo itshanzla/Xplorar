@@ -1,4 +1,3 @@
-
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -24,7 +23,9 @@ const AuthStack = () => {
   useEffect(() => {
     const checkOnboarding = async () => {
       try {
-        const hasCompletedOnBoarding = await AsyncStorage.getItem('onBoardingCompleted');
+        const hasCompletedOnBoarding = await AsyncStorage.getItem(
+          'onBoardingCompleted',
+        );
         console.log('onBoardingCompleted value:', hasCompletedOnBoarding);
         if (hasCompletedOnBoarding != null) {
           setIsFirstLaunch(true);
@@ -63,8 +64,8 @@ const AuthStack = () => {
         </Stack.Screen>
       )}
       <Stack.Screen name="LoginLanding" component={LoginLanding} />
-      <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="SignupScreen" component={SignupScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="SelectForgot" component={SelectForgot} />
       <Stack.Screen name="EmailVerify" component={EmailVerify} />
       <Stack.Screen name="PhoneVerify" component={PhoneVerify} />
