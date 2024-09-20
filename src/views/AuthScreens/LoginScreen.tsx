@@ -18,7 +18,7 @@ import {AppBaseColor} from '../../../assets/Colors/Colors';
 import Loginbtn from '../../components/Buttons/Loginbtn';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
-import NotifyToast from '../../components/NotifyToast/NotifyToast';
+// import NotifyToast from '../../components/NotifyToast/NotifyToast';
 
 const LoginScreen = () => {
   const navigation: any = useNavigation();
@@ -28,13 +28,13 @@ const LoginScreen = () => {
   const [secureEntry, setSecureEntry] = useState<boolean>(true);
   const [showToast,setShowToast]=useState<boolean>(false)
   const [Toastmsg,setToastmsg]=useState<any>('')
-  const visibleToast = (message:any) => {
-    setToastmsg(message)
-    setShowToast(true);
-    setTimeout(() => {
-      setShowToast(false);
-    }, 3000); 
-  };
+  // const visibleToast = (message:any) => {
+  //   setToastmsg(message)
+  //   setShowToast(true);
+  //   setTimeout(() => {
+  //     setShowToast(false);
+  //   }, 3000); 
+  // };
   const handleLogin = async () => {
     try {
       if (Email != '' && Password != '') {
@@ -58,7 +58,8 @@ const LoginScreen = () => {
         console.log('Signin Cancelled');
       }
     } catch (err : any) {
-      visibleToast(err?.message)
+      // visibleToast(err?.message)
+      console.error(err)
     }
   };
   return (
@@ -161,13 +162,13 @@ const LoginScreen = () => {
           </ScrollView>
         </ImageBackground>
       </View>
-      <View style={{justifyContent:'center',alignItems:'center'}}>
+      {/* <View style={{justifyContent:'center',alignItems:'center'}}>
         <NotifyToast
         message={Toastmsg}
         visible={showToast}
         type={'ERROR'}
         />
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };

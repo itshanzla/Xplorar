@@ -7,5 +7,7 @@ export const AppBaseColor = {
     yellow: "#dbae30",
     red:"#f51b07",
     lightblue:"#007AFF",
-    lightGray:"#f2f5fa"
+    lightGray:"#f2f5fa",
+    ivory:"#FFFFF0",
+    pearlwhite:"#F8F6F0"
 }

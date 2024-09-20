@@ -21,6 +21,19 @@ export const AppImages={
     success : require('../images/success.png'),
     info : require('../images/info.png'),
     warning : require('../images/warning.png'),
+    HomeFill : require('../images/HomeFill.png'),
+    Search : require('../images/Search.png'),
+    Menu : require('../images/Menu-Fill.png'),
+    Profile : require('../images/Profile-Fill.png'),
+    Plus : require('../images/Plus.png'),
+    ArrowLeftOutline : require('../images/ArrowLeftOutline.png'),
+    belloutline : require('../images/BellOutline.png'),
+    Location : require('../images/Location.png'),
+    wishlist : require('../images/wishlist.png'),
+    corousel1 : require('../images/corousel-1.jpg'),
+    corousel2 : require('../images/corousel-2.jpg'),
+    corousel3 : require('../images/corousel-3.jpg'),
+    corousel4 : require('../images/corousel-4.jpg'),
     
     
 }

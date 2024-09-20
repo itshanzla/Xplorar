@@ -22,8 +22,8 @@ const App = () => {
         <SplashScreen />
       ) : (
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="AuthStack" component={AuthStack} />
           <Stack.Screen name="HomeStack" component={HomeStack} />
+          <Stack.Screen name="AuthStack" component={AuthStack} />
         </Stack.Navigator>
       )}
     </NavigationContainer>
