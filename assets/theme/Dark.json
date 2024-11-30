@@ -1,0 +1,17 @@
+{
+  "mode": "dark",
+  "primarybackground": "#140520",
+  "secondrybg": "#2E2D2D",
+  "primarycolor": "#7D5683",
+  "primarytext": "#C9BFB5",
+  "secondrytext": "#E2E9FF",
+  "secondrycolor" : "E2E9FF",
+  "black": "#333333",
+  "white": "#FFFFFF",
+  "wngray" : "#FFFFFF",
+  "wnb" : "#FFFFFF",
+  "modeicon": "#E2E9FF",
+  "icon": "#f8f9fa",
+  "firsttxt": "#C9BFB5",
+  "secondtxt": "#E2E9FF"
+}

@@ -13,7 +13,7 @@ const App = () => {
   useEffect(() => {
     setTimeout(() => {
       setInitializing(false);
-    }, 3000);
+    }, 2000);
   }, []);
 
   return (

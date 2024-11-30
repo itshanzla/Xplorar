@@ -17,6 +17,7 @@ import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {AppImages} from '../../../assets/images/AppImages';
 import {AppFontSize} from '../../../assets/Texts/Fontsize';
 import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
+import AILotteIcon from '../../components/LotteFile/AILotteIcon';
 
 const BottomTabNavBar = () => {
   const Tab = createBottomTabNavigator();
@@ -115,12 +116,7 @@ const BottomTabNavBar = () => {
         options={{
           tabBarIcon: ({focused}) => (
             <View style={styles.HomeMain}>
-              <Image
-                source={AppImages.Plus}
-                resizeMode="contain"
-                style={{width: focused ? 40 : 30, height: 40}}
-                tintColor={focused ? AppBaseColor.blue : AppBaseColor.gray}
-              />
+              <AILotteIcon />
             </View>
           ),
           tabBarButton: props => <CustomTabBarBtn {...props} />,

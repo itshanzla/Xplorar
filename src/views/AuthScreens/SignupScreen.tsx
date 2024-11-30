@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   ImageBackground,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -19,37 +20,66 @@ import Loginbtn from '../../components/Buttons/Loginbtn';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import {useTranslation} from 'react-i18next';
+import axios from 'axios';
+import {useSelector} from 'react-redux';
+import BackButton from '../../components/Buttons/BackButton';
 
 const SignupScreen = () => {
   const navigation: any = useNavigation();
   const [Name, Setname] = useState<string>('');
   const [Email, SetEmail] = useState<string>('');
+  const [Message, SetMessage] = useState<string>('');
   const [Password, SetPassword] = useState<string>('');
   const [Loading, SetLoading] = useState<boolean>(false);
   const [secureEntry, setSecureEntry] = useState<boolean>(true);
+  const {t} = useTranslation();
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
 
-  const handleSignup = async () => {
+  // const handleSignup = async () => {
+  //   try {
+  //     if (Email && Password) {
+  //       SetLoading(true);
+  //       const isuserCreated = await auth().createUserWithEmailAndPassword(
+  //         Email,
+  //         Password,
+  //       );
+  //       firestore().collection('Users').doc(isuserCreated?.user?.uid).set({
+  //         email: isuserCreated?.user?.email,
+  //         uid: isuserCreated?.user?.uid,
+  //         name: Name,
+  //       });
+  //       navigation.navigate('LoginScreen');
+  //       SetLoading(false);
+  //     } else {
+  //       console.log('Auth failed');
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
+  const handleRegister = async () => {
+    SetLoading(true);
     try {
-      if (Email && Password) {
-        SetLoading(true);
-        const isuserCreated = await auth().createUserWithEmailAndPassword(
-          Email,
-          Password,
-        );
-        firestore().collection('Users').doc(isuserCreated?.user?.uid).set({
-          email: isuserCreated?.user?.email,
-          uid: isuserCreated?.user?.uid,
-          name: Name,
-        });
-        navigation.navigate('LoginScreen');
-        SetLoading(false);
-      } else {
-        console.log('Auth failed');
-      }
+      await axios.post('http://192.168.10.3:3000/register', {
+        Username: Name.trim(),
+        email: Email.trim(),
+        password: Password,
+      });
+      SetMessage('Registration Successful');
+      console.log(Message);
+      Setname('');
+      SetEmail('');
+      SetPassword('');
     } catch (err) {
-      console.error(err);
+      console.error('Registration error:', err);
+      SetMessage('Registration Failed');
+    } finally {
+      SetLoading(false);
     }
   };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.main}>
@@ -57,7 +87,11 @@ const SignupScreen = () => {
         <ImageBackground
           resizeMode="cover"
           style={styles.backimg}
-          source={AppImages.signupbackground}>
+          source={
+            ThemeMode.mode === 'light'
+              ? AppImages.signupbackground
+              : AppImages.signupdark
+          }>
           <ScrollView
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={{flexGrow: 1}}>
@@ -67,30 +101,40 @@ const SignupScreen = () => {
                 alignItems: 'center',
                 flex: 1,
               }}>
-              <KeyboardAvoidingView style={styles.loginView}>
+                <BackButton tintColor={AppBaseColor.white} />
+              <KeyboardAvoidingView
+                style={[
+                  styles.loginView,
+                  {backgroundColor: ThemeMode.secondrybg},
+                ]}>
                 <Text
                   style={{
                     fontSize: 28,
                     padding: 10,
                     marginLeft: 10,
-                    color: '#336749',
+                    color: ThemeMode.firsttxt,
                     fontFamily: Fonts.outfitBold,
                     marginBottom: -10,
                   }}>
-                  {'Join\t'}
-                  <Text style={{color: '#007A8C'}}>
-                    {'the\t'}
-                    <Text style={{color: '#336749'}}>
-                      {'Journey\t'}
-                      <Text style={{color: '#007A8C'}}>{'Now.'}</Text>
+                  {t('Join')}
+                  <Text style={{color: ThemeMode.secondtxt}}>
+                    {t('the')}
+                    <Text style={{color: ThemeMode.firsttxt}}>
+                      {t('Journey')}
+                      <Text style={{color: ThemeMode.secondtxt}}>
+                        {t('Now')}
+                      </Text>
                     </Text>
                   </Text>
                 </Text>
-                <Text style={styles.desc}>Unlock endless journeys ahead! </Text>
+                <Text style={[styles.desc, {color: ThemeMode.primarycolor}]}>
+                  {t('Unlockendlessjourneysahead')}
+                </Text>
                 <TextFields
                   value={Name}
                   onChangeText={(value: any) => Setname(value)}
                   mainStyle={{marginBottom: 10}}
+                  placeholderTextColor={ThemeMode.secondrytext}
                   Placeholder="Name"
                 />
                 <TextFields
@@ -98,6 +142,7 @@ const SignupScreen = () => {
                   Placeholder="Email"
                   value={Email}
                   onChangeText={(value: any) => SetEmail(value)}
+                  placeholderTextColor={ThemeMode.secondrytext}
                 />
                 <TextFields
                   secureTextEntry={secureEntry}
@@ -108,6 +153,7 @@ const SignupScreen = () => {
                   onChangeText={(value: any) => SetPassword(value)}
                   ispassword
                   Placeholder="Password"
+                  placeholderTextColor={ThemeMode.secondrytext}
                 />
                 <View
                   style={{
@@ -125,42 +171,83 @@ const SignupScreen = () => {
                     style={{
                       fontSize: AppFontSize.smalltxt,
                       fontFamily: Fonts.outfitRegular,
+                      color: ThemeMode.secondrytext,
                     }}>
-                    {'Already Have an Account?\t'}
+                    {t('Alreadyhaveanaccount')}
                     <Text
                       onPress={() => navigation.navigate('LoginScreen')}
-                      style={{color: AppBaseColor.blue}}>
-                      {'Signin'}
+                      style={{color: ThemeMode.primarycolor}}>
+                      {t('login')}
                     </Text>
                   </Text>
                 </View>
                 <Loginbtn
                   txtStyle={{color: AppBaseColor.white}}
-                  btnStyle={{backgroundColor: AppBaseColor.blue}}
-                  title="Sign up"
+                  btnStyle={{backgroundColor: ThemeMode.primarycolor}}
+                  title={t('signup')}
                   mainStyle={{marginTop: 20}}
-                  onpress={() => handleSignup()}
+                  onpress={() => handleRegister()}
                 />
                 <View
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: 20,
+                    marginBottom: 10,
                     marginHorizontal: 10,
                   }}>
-                  <Text style={styles.txt}>
-                    By clicking{' '}
-                    <Text style={{color: AppBaseColor.blue}}>
-                      'Sign Up'
-                      <Text style={{color: AppBaseColor.lightgreen}}>
-                        , you agree to our{' '}
+                  <Text
+                    style={[
+                      styles.txt,
+                      {
+                        color:
+                          ThemeMode.mode === 'light'
+                            ? AppBaseColor.lightgreen
+                            : AppBaseColor.pearlwhite,
+                      },
+                    ]}>
+                    {t('Byclicking')}
+                    <Text
+                      style={{
+                        color:
+                          ThemeMode.mode === 'light'
+                            ? AppBaseColor.blue
+                            : AppBaseColor.blue,
+                      }}>
+                      {t('Signup')}
+                      <Text
+                        style={{
+                          color:
+                            ThemeMode.mode === 'light'
+                              ? AppBaseColor.lightgreen
+                              : AppBaseColor.pearlwhite,
+                        }}>
+                        ,{t('youagreetoour')}
                         <Text
-                          style={{color: AppBaseColor.lightblue, marginTop: 5}}>
-                          {"\n'Terms'\t"}
-                          <Text style={{color: AppBaseColor.lightgreen}}>
-                            {'and\t'}
-                            <Text style={{color: AppBaseColor.lightblue}}>
-                              {"'Policies'"}
+                          style={{
+                            color:
+                              ThemeMode.mode === 'light'
+                                ? AppBaseColor.lightblue
+                                : AppBaseColor.yellow,
+                            marginTop: 5,
+                          }}>
+                          {t('terms')}
+                          <Text
+                            style={{
+                              color:
+                                ThemeMode.mode === 'light'
+                                  ? AppBaseColor.lightgreen
+                                  : AppBaseColor.pearlwhite,
+                            }}>
+                            {t('and')}
+                            <Text
+                              style={{
+                                color:
+                                  ThemeMode.mode === 'light'
+                                    ? AppBaseColor.lightblue
+                                    : AppBaseColor.yellow,
+                              }}>
+                              {t('policies')}
                             </Text>
                           </Text>
                         </Text>
@@ -189,17 +276,17 @@ const styles = StyleSheet.create({
   },
   loginView: {
     backgroundColor: '#F6F6F6',
-    width: '90%',
-    borderRadius: 20,
-    elevation: 7,
-    flex: 0.1,
+    width: '100%',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    bottom: 0,
+    position: 'absolute',
   },
   desc: {
-    fontSize: AppFontSize.largetext,
+    fontSize: AppFontSize.extramedium,
     padding: 20,
     paddingTop: 0,
     fontFamily: Fonts.outfitSemiBold,
-    color: '#336749',
   },
   txt: {
     fontSize: AppFontSize.smalltxt,

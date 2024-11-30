@@ -12,6 +12,7 @@ import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {AppImages} from '../../../assets/images/AppImages';
 import OnBoardingData from './OnBoardingData';
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 interface Fluidbutton{
   percentage?:any,
   scrollTo?:any,
@@ -27,7 +28,8 @@ const Fluidbutton = ({percentage,scrollTo,currentIndex,onPress}:Fluidbutton) => 
   const circumference = 2 * Math.PI * radius;
   const progressAnimation : any = useRef(new Animated.Value(0)).current;
   const progressRef: any = useRef(null);
-  const navigation : any = useNavigation()
+  const navigation : any = useNavigation();
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
   const Animation : any = (toValue: any) => {
     return Animated.timing(progressAnimation, {
       toValue,
@@ -55,10 +57,10 @@ const Fluidbutton = ({percentage,scrollTo,currentIndex,onPress}:Fluidbutton) => 
   }, [percentage]);
   return (
     <View style={{justifyContent: 'center', alignItems: 'center'}}>
-      <Svg fill={'white'} width={size} height={size}>
+      <Svg fill={ThemeMode.mode === 'light' ? '#FFFFFF' : '#140520'} width={size} height={size}>
         <G rotation="-90" origin={center}>
           <Circle
-            stroke="#E6E7E8"
+            stroke={'#E6E7E8'}
             cx={center}
             cy={center}
             r={radius}
@@ -66,7 +68,7 @@ const Fluidbutton = ({percentage,scrollTo,currentIndex,onPress}:Fluidbutton) => 
           />
           <Circle
           ref={progressRef}
-            stroke={AppBaseColor.lightgreen}
+            stroke={ThemeMode.mode === 'light' ? AppBaseColor.lightgreen : '#7D5683'}
             cx={center}
             cy={center}
             r={radius}
@@ -76,7 +78,7 @@ const Fluidbutton = ({percentage,scrollTo,currentIndex,onPress}:Fluidbutton) => 
         </G>
       </Svg>
       {currentIndex < OnBoardingData.length - 1 ?
-      <TouchableOpacity onPress={scrollTo} activeOpacity={0.6} style={styles.btn}>
+      <TouchableOpacity onPress={scrollTo} activeOpacity={0.6} style={[styles.btn,{backgroundColor: ThemeMode.primarycolor}]}>
       <Image
         tintColor={'white'}
         style={styles.img}
@@ -84,7 +86,7 @@ const Fluidbutton = ({percentage,scrollTo,currentIndex,onPress}:Fluidbutton) => 
       />
     </TouchableOpacity>
     :
-    <TouchableOpacity onPress={onPress} activeOpacity={0.6} style={styles.btn}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.6} style={[styles.btn,{backgroundColor: ThemeMode.primarycolor}]}>
         <Image
         tintColor={'white'}
         style={styles.img}

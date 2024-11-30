@@ -18,6 +18,10 @@ import {AppBaseColor} from '../../../assets/Colors/Colors';
 import Loginbtn from '../../components/Buttons/Loginbtn';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
+import {useTranslation} from 'react-i18next';
+import BackButton from '../../components/Buttons/BackButton';
+import {useSelector} from 'react-redux';
+import axios from 'axios';
 // import NotifyToast from '../../components/NotifyToast/NotifyToast';
 
 const LoginScreen = () => {
@@ -26,40 +30,54 @@ const LoginScreen = () => {
   const [Password, SetPassword] = useState<string>('');
   const [Loading, SetLoading] = useState<boolean>(false);
   const [secureEntry, setSecureEntry] = useState<boolean>(true);
-  const [showToast,setShowToast]=useState<boolean>(false)
-  const [Toastmsg,setToastmsg]=useState<any>('')
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [Toastmsg, setToastmsg] = useState<any>('');
+  const {t} = useTranslation();
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
   // const visibleToast = (message:any) => {
   //   setToastmsg(message)
   //   setShowToast(true);
   //   setTimeout(() => {
   //     setShowToast(false);
-  //   }, 3000); 
+  //   }, 3000);
+  // }; 
+  // const handleLogin = async () => {
+  //   try {
+  //     if (Email != '' && Password != '') {
+  //       const isUserSignin = await auth().signInWithEmailAndPassword(
+  //         Email,
+  //         Password,
+  //       );
+  //       const data = {
+  //         email: Email,
+  //         passsword: Password,
+  //       };
+  //       navigation.dispatch(
+  //         CommonActions.reset({
+  //           index: 0,
+  //           routes: [{name: 'HomeStack'}],
+  //         }),
+  //       );
+  //       SetEmail('');
+  //       SetPassword('');
+  //     } else {
+  //       console.log('Signin Cancelled');
+  //     }
+  //   } catch (err : any) {
+  //     // visibleToast(err?.message)
+  //     console.error(err)
+  //   }
   // };
+
   const handleLogin = async () => {
     try {
-      if (Email != '' && Password != '') {
-        const isUserSignin = await auth().signInWithEmailAndPassword(
-          Email,
-          Password,
-        );
-        const data = {
-          email: Email,
-          passsword: Password,
-        };
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{name: 'HomeStack'}],
-          }),
-        );
-        SetEmail('');
-        SetPassword('');
-      } else {
-        console.log('Signin Cancelled');
-      }
-    } catch (err : any) {
-      // visibleToast(err?.message)
-      console.error(err)
+      const response = await axios.post('http://192.168.10.3:3000/login', {
+        email: Email.trim(),
+        password: Password,
+      });
+      console.log('Login Successful=>', response.data.token);
+    } catch (err) {
+      console.log('Login failed because =>', err);
     }
   };
   return (
@@ -69,7 +87,15 @@ const LoginScreen = () => {
         <ImageBackground
           resizeMode="cover"
           style={styles.backimg}
-          source={AppImages.loginbackimage}>
+          source={
+            ThemeMode.mode === 'light'
+              ? AppImages.loginbackimage
+              : AppImages.darkbg2
+          }>
+          <BackButton
+            onPress={() => navigation.goBack()}
+            tintColor={ThemeMode.white}
+          />
           <ScrollView
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={{flexGrow: 1}}>
@@ -79,33 +105,32 @@ const LoginScreen = () => {
                 alignItems: 'center',
                 flex: 1,
               }}>
-              <KeyboardAvoidingView style={styles.loginView}>
-                <Text
-                  style={{
-                    fontSize: AppFontSize.header,
-                    padding: 10,
-                    marginLeft: 10,
-                    color: '#336749',
-                    fontFamily: Fonts.outfitBold,
-                    marginBottom: -10,
-                  }}>
-                  {"Let's\t"}
-                  <Text style={{color: '#007A8C'}}>
-                    {'Travel\t'}
-                    <Text style={{color: '#336749'}}>
-                      {'You\t'}
-                      <Text style={{color: '#007A8C'}}>{'In.'}</Text>
+              <KeyboardAvoidingView
+                style={[
+                  styles.loginView,
+                  {backgroundColor: ThemeMode.secondrybg},
+                ]}>
+                <Text style={[styles.txt1, {color: ThemeMode.firsttxt}]}>
+                  {t('lets')}
+                  <Text style={{color: ThemeMode.secondtxt}}>
+                    {t('travel')}
+                    <Text style={{color: ThemeMode.firsttxt}}>
+                      {t('you')}
+                      <Text style={{color: ThemeMode.secondtxt}}>
+                        {t('in')}
+                      </Text>
                     </Text>
                   </Text>
                 </Text>
-                <Text style={styles.desc}>
-                  Discover the world with Every Sign In.{' '}
+                <Text style={[styles.desc, {color: ThemeMode.primarycolor}]}>
+                  {t('DiscovertheworldwithEverySignIn')}
                 </Text>
                 <TextFields
                   value={Email}
                   onChangeText={(value: any) => SetEmail(value)}
                   mainStyle={{marginBottom: 10}}
-                  Placeholder="Email"
+                  Placeholder={t('email')}
+                  placeholderTextColor={ThemeMode.secondrytext}
                 />
                 <TextFields
                   value={Password}
@@ -115,7 +140,9 @@ const LoginScreen = () => {
                     setSecureEntry(!secureEntry);
                   }}
                   ispassword
-                  Placeholder="Password"
+                  Placeholder={t('password')}
+                  placeholderTextColor={ThemeMode.secondrytext}
+                  tintcolor={ThemeMode.secondrytext}
                 />
                 <View
                   style={{
@@ -123,18 +150,17 @@ const LoginScreen = () => {
                     alignItems: 'flex-end',
                     paddingRight: 20,
                     marginTop: 10,
-                    marginBottom: 20,
                   }}>
                   <Text
-                    onPress={() => navigation.navigate('SelectForgot')}
-                    style={styles.txt}>
-                    Forgot Password?
+                    onPress={() => navigation.navigate('ForgotPassword')}
+                    style={[styles.txt, {color: ThemeMode.secondrytext}]}>
+                    {t('forgotPassword')}
                   </Text>
                 </View>
                 <Loginbtn
                   txtStyle={{color: AppBaseColor.white}}
-                  btnStyle={{backgroundColor: AppBaseColor.blue}}
-                  title="Sign in"
+                  btnStyle={{backgroundColor: ThemeMode.primarycolor}}
+                  title={t('login')}
                   mainStyle={{marginTop: 20}}
                   onpress={() => handleLogin()}
                 />
@@ -143,17 +169,19 @@ const LoginScreen = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: 20,
+                    marginBottom: 20,
                   }}>
                   <Text
                     style={{
                       fontSize: AppFontSize.smalltxt,
                       fontFamily: Fonts.outfitRegular,
+                      color: ThemeMode.secondrytext,
                     }}>
-                    {"Doesn't Have an Account?\t"}
+                    {t('DoesntHaveanAccount')}
                     <Text
                       onPress={() => navigation.navigate('SignupScreen')}
-                      style={{color: AppBaseColor.blue}}>
-                      {'Signup'}
+                      style={{color: ThemeMode.primarycolor}}>
+                      {t('signup')}
                     </Text>
                   </Text>
                 </View>
@@ -184,11 +212,11 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   loginView: {
-    backgroundColor: '#F6F6F6',
-    width: '90%',
-    borderRadius: 20,
-    elevation: 7,
-    flex: 0.1,
+    width: '100%',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    position: 'absolute',
+    bottom: 0,
   },
   desc: {
     fontSize: AppFontSize.largetext,
@@ -199,7 +227,13 @@ const styles = StyleSheet.create({
   },
   txt: {
     fontSize: AppFontSize.smalltxt,
-    color: AppBaseColor.lightgreen,
     fontFamily: Fonts.outfitRegular,
+  },
+  txt1: {
+    fontSize: AppFontSize.header,
+    padding: 10,
+    marginLeft: 10,
+    fontFamily: Fonts.outfitBold,
+    marginBottom: -10,
   },
 });

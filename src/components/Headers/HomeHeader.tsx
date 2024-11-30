@@ -69,20 +69,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: 30,
-    paddingHorizontal: '3%',
+    paddingHorizontal: '5%',
     position: 'relative',
   },
 
   iconContainerLeft: {
     position: 'absolute',
-    left: '3%',
+    left: '4%',
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   iconContainerRight: {
     position: 'absolute',
-    right: '3%',
+    right: '4%',
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -17,8 +17,9 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 import StatusBarTrans from '../../components/StatusBar/StatusBarTrans';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {addData, setUser} from '../Redux/AuthSlice.';
+import {useTranslation} from 'react-i18next';
 
 GoogleSignin.configure({
   webClientId:
@@ -26,6 +27,8 @@ GoogleSignin.configure({
 });
 const LoginLanding = () => {
   const navigation: any = useNavigation();
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
+  const {t} = useTranslation();
   const dispatch = useDispatch();
   const [showToast, setShowToast] = useState<boolean>(false);
   // const [Toastmsg, setToastmsg] = useState<any>('');
@@ -61,7 +64,7 @@ const LoginLanding = () => {
       return auth().signInWithCredential(googleCredentials);
     } catch (err: any) {
       // visibleToast(err?.message);
-      console.error(err)
+      console.error(err);
     }
   };
 
@@ -71,33 +74,32 @@ const LoginLanding = () => {
       <Image
         resizeMode="cover"
         style={styles.img}
-        source={AppImages.loginback}
+        source={
+          ThemeMode.mode === 'light' ? AppImages.loginback : AppImages.darkbg1
+        }
       />
-      <View style={styles.ChildContainer}>
-        <Text style={styles.headertxt}>Xplorer</Text>
-        <Text style={styles.desc}>
-          Discover the world with ease and make every journey unforgettable.
-          Whether you're planning your next adventure or just exploring nearby
-          spots
+      <View
+        style={[
+          styles.ChildContainer,
+          {backgroundColor: ThemeMode.secondrybg},
+        ]}>
+        <Text style={[styles.headertxt, {color: ThemeMode.primarytext}]}>
+          {t('Apptitle')}
+        </Text>
+        <Text style={[styles.desc, {color: ThemeMode.secondrytext}]}>
+          {t('Description')}
         </Text>
         <Loginbtn
           onpress={() => navigation.navigate('LoginScreen')}
           mainStyle={{marginBottom: 20}}
-          title="Login with Email"
+          title={t('LoginWithEmail')}
         />
-        <Text
-          style={{
-            marginTop: 10,
-            fontSize: AppFontSize.smalltxt,
-            fontFamily: Fonts.outfitRegular,
-            color: AppBaseColor.black,
-            alignSelf: 'center',
-          }}>
-          {"Doesn't Have an Account?\t"}
+        <Text style={[styles.txt2,{color: ThemeMode.secondrytext}]}>
+          {t('DoesntHaveanAccount')}{' '}
           <Text
             onPress={() => navigation.navigate('SignupScreen')}
-            style={{color: AppBaseColor.blue}}>
-            Signup
+            style={[{color: ThemeMode.primarycolor}]}>
+            {t('signup')}
           </Text>
         </Text>
         <View
@@ -122,12 +124,12 @@ const LoginLanding = () => {
           onPress={() => onGoogleButtonPress()}
           mainStyle={{marginBottom: 5}}
           source={AppImages.google}
-          title="Login With Google"
+          title={t('Loginwithgoogle')}
         />
         <SocialLogin
           tintcolor="white"
           source={AppImages.apple}
-          title="Login With Apple"
+          title={t('Loginwithapple')}
         />
       </View>
       {/* <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -148,9 +150,8 @@ const styles = StyleSheet.create({
     height: 320,
   },
   ChildContainer: {
-    backgroundColor: AppBaseColor.white,
     height: '100%',
-    marginTop: -20,
+    marginTop: '-15%',
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
   },
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
     fontSize: AppFontSize.header,
     textAlign: 'center',
     fontFamily: Fonts.outfitBold,
-    color: AppBaseColor.black,
+
     paddingTop: 10,
   },
   desc: {
@@ -174,5 +175,11 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: AppBaseColor.gray,
     marginVertical: 20,
+  },
+  txt2: {
+    marginTop: 10,
+    fontSize: AppFontSize.smalltxt,
+    fontFamily: Fonts.outfitRegular,
+    alignSelf: 'center',
   },
 });

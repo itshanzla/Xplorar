@@ -27,7 +27,7 @@ const Forgotbtn = ({stylecontainer,text,subtext1,icon,styletxt, onPress, isSelec
           source={icon}
         />
         <Text style={[styles.Txt,styletxt,{color:isSelected ? AppBaseColor.blue : AppBaseColor.gray}]}>{text}</Text>
-        <Text style={styles.Txt1}>{subtext1}</Text>
+        <Text style={[styles.Txt1,{color:isSelected ? AppBaseColor.blue : AppBaseColor.gray}]}>{subtext1}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
   Txt1: {
     alignSelf: 'flex-start',
     fontFamily: Fonts.outfitRegular,
-    fontSize:AppFontSize.extrasmalltxt
+    fontSize:AppFontSize.extrasmalltxt,
+    color: AppBaseColor.gray,
     
   },
   Image: {

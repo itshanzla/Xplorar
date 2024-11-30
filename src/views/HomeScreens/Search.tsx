@@ -1,12 +1,17 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { AppBaseColor } from '../../../assets/Colors/Colors'
 import { Fonts } from '../../../android/app/src/main/assets/fonts/Fonts'
+import SearchField from '../../components/SearchComp/SearchField'
 
 const Search = ({navigation} : any) => {
   return (
-    <View style={{backgroundColor:AppBaseColor.blue,flex:1,justifyContent:'center',alignItems:'center'}}>
-      <Text style={{fontSize:24,color:'white',fontFamily:Fonts.outfitBold}}>Search</Text>
+    <View style={{backgroundColor:AppBaseColor.ivory,flex:1}}>
+      <StatusBar
+        barStyle={'dark-content'}
+        backgroundColor={AppBaseColor.ivory}
+      />
+      <SearchField search placeholder='Search' />
     </View>
   )
 }

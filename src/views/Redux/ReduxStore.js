@@ -10,6 +10,7 @@ import {
   REGISTER,
   REHYDRATE,
 } from 'redux-persist';
+import ThemeReducer from './ThemeSlice';
 let persistConfig = {
   key: 'root',
   storage: AsyncStorage,
@@ -17,6 +18,7 @@ let persistConfig = {
 
 let rootReducer = combineReducers({
   user: AuthSlice,
+  theme: ThemeReducer
 });
 
 let persistedReducer = persistReducer(persistConfig, rootReducer);

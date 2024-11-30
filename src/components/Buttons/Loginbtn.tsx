@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection:'row',
-    elevation:7
+    elevation:8
   },
   txt: {
     color: AppBaseColor.black,

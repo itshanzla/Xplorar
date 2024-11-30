@@ -9,5 +9,6 @@ export const AppBaseColor = {
     lightblue:"#007AFF",
     lightGray:"#f2f5fa",
     ivory:"#FFFFF0",
-    pearlwhite:"#F8F6F0"
+    pearlwhite:"#F8F6F0",
+    purple : "#7D5683"
 }
