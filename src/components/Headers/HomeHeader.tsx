@@ -9,6 +9,9 @@ import {
 } from 'react-native';
 import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
 import {AppFontSize} from '../../../assets/Texts/Fontsize';
+import {useSelector} from 'react-redux';
+import BackButton from '../Buttons/BackButton';
+import {AppImages} from '../../../assets/images/AppImages';
 interface HomeHeaderProps {
   icon1?: any;
   icon?: any;
@@ -34,16 +37,29 @@ const HomeHeader = ({
   txtStyle,
   LeftTint,
 }: HomeHeaderProps) => {
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
   return (
-    <View style={[styles.container, style]}>
+    <View
+      style={[
+        styles.container,
+        style,
+        {backgroundColor: ThemeMode.primarybackground},
+      ]}>
       {icon && (
-        <TouchableOpacity style={styles.iconContainerLeft} onPress={onPress}>
-          <Image tintColor={LeftTint} style={styles.icon} source={icon} />
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onPress}
+          style={[styles.btn, {backgroundColor: ThemeMode.primarycolor}]}>
+          <Image
+            tintColor={ThemeMode.white}
+            style={styles.img}
+            source={AppImages.leftnav}
+          />
         </TouchableOpacity>
       )}
 
       <View style={styles.textContainer}>
-        <Text style={[styles.text, txtStyle, {color: 'black'}]}>{name}</Text>
+        <Text style={[styles.text, txtStyle, {color: ThemeMode?.wnb}]}>{name}</Text>
       </View>
 
       {icon1 && (
@@ -117,5 +133,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 13,
     top: 0,
+  },
+  img: {
+    width: 24,
+    height: 24,
+  },
+  btn: {
+    alignSelf: 'flex-start',
+    borderRadius: 100,
+    height: 34,
+    width: 34,
+    left: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    elevation: 7,
+    zIndex: 1,
   },
 });

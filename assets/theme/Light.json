@@ -1,7 +1,7 @@
 {
   "mode": "light",
   "primarybackground": "#FAF9F6",
-  "secondrybg": "#FAF9F6",
+  "secondrybg": "#007A8C",
   "primarycolor": "#4D98A6",
   "primarytext": "#4D98A6",
   "secondrytext": "#777777",
@@ -13,5 +13,6 @@
   "modeicon" : "#4D98A6",
   "icon" : "#212529",
   "firsttxt" : "#007A8C",
-  "secondtxt" : "#336749"
+  "secondtxt" : "#336749",
+  "Darkbg" : "#FFFFFF"
 }

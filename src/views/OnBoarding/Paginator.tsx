@@ -47,7 +47,7 @@ const Paginator = ({data = [], scrollX}: Paginator) => {
               {
                 width: dotWidth,
                 opacity: Opacity,
-                backgroundColor: ThemeMode.primarycolor,
+                backgroundColor: ThemeMode?.primarycolor,
               },
             ]}
             key={index.toString()}

@@ -3,14 +3,14 @@ import { AppImages } from "../../../assets/images/AppImages";
 export const contentData = [
     {
         id:1,
-        image:AppImages.abudhabi,
-        title:"Abu Dhabi",
+        image:AppImages.abudhabi1,
+        title:"abudhabi",
         desc:"UAE"
     },
     {
         id:2,
         image:AppImages.bigben,
-        title:"Big Ben",
+        title:"bigben",
         desc:"London"
     },
     {
@@ -25,44 +25,52 @@ export const contentData = [
         title:"Cologne",
         desc:"Germany"
     },
-    // {
-    //     id:5,
-    //     image:AppImages.corousel2,
-    //     title:"Las Vegas",
-    // },
-    // {
-    //     id:6,
-    //     image:AppImages.corousel2,
-    //     title:"California",
-    // },
-    // {
-    //     id:7,
-    //     image:AppImages.corousel2,
-    //     title:"Sydney",
-    // },
-    // {
-    //     id:8,
-    //     image:AppImages.corousel2,
-    //     title:"Toronto",
-    // },
-    // {
-    //     id:9,
-    //     image:AppImages.corousel2,
-    //     title:"Lahore",
-    // },
-    // {
-    //     id:10,
-    //     image:AppImages.corousel2,
-    //     title:"Islamabad",
-    // },
-    // {
-    //     id:11,
-    //     image:AppImages.corousel2,
-    //     title:"Mumbai",
-    // },
-    // {
-    //     id:12,
-    //     image:AppImages.corousel2,
-    //     title:"Hong Kong",
-    // },
+    {
+        id:5,
+        image:AppImages.lasvegas2,
+        title:"Las Vegas",
+        desc:"USA"
+    },
+    {
+        id:6,
+        image:AppImages.california,
+        title:"California",
+        desc:"USA"
+    },
+    {
+        id:7,
+        image:AppImages.sydney,
+        title:"Sydney",
+        desc:"Australia"
+    },
+    {
+        id:8,
+        image:AppImages.toronto,
+        title:"Toronto",
+        desc:"Canada"
+    },
+    {
+        id:9,
+        image:AppImages.lahore,
+        title:"Lahore",
+        desc:"Pakistan"
+    },
+    {
+        id:10,
+        image:AppImages.islamabad,
+        title:"Islamabad",
+        desc:"Pakistan"
+    },
+    {
+        id:11,
+        image:AppImages.mumbai,
+        title:"Mumbai",
+        desc:"Pakistan"
+    },
+    {
+        id:12,
+        image:AppImages.hongkong,
+        title:"HongKong",
+        desc:"SpecialChina"
+    },
 ]

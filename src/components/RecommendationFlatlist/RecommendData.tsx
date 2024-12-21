@@ -3,86 +3,86 @@ import { AppImages } from "../../../assets/images/AppImages";
 export const RecommendData = [
     {
         id:1,
-        image:AppImages.corousel2,
-        title:"New York",
-        weather:"90f",
-        desc:"This place is super luxury having billionaires family"
+        image:AppImages.stregis,
+        title:"St. Regis Bora",
+        rating:"4.6+",
+        location:"French Polynesia,France"
     },
     {
         id:2,
-        image:AppImages.corousel2,
+        image:AppImages.losangeles,
         title:"Los Angeles",
-        weather:"90f",
-        desc:"This place is super luxury having billionaires family"
+        rating:"4.6+",
+        location:"City in California,USA"
     },
     {
         id:3,
-        image:AppImages.corousel2,
+        image:AppImages.oslo,
         title:"Oslo",
-        weather:"90f",
-        desc:"This place is super luxury having billionaires family"
+        rating:"4.6+",
+        location:"Head of the Oslofjord,Norway"
     },
     {
         id:4,
-        image:AppImages.corousel2,
+        image:AppImages.ontario,
         title:"Ontario",
-        weather:"90f",
-        desc:"This place is super luxury having billionaires family"
+        rating:"4.6+",
+        location:"Home to Ottawa,CANADA"
     },
     {
         id:5,
-        image:AppImages.corousel2,
+        image:AppImages.losvegas,
         title:"Las Vegas",
-        weather:"90f",
-        desc:"This place is super luxury having billionaires family"
+        rating:"4.6+",
+        location:"City in Nevada,USA"
     },
     {
         id:6,
-        image:AppImages.corousel2,
-        title:"California",
-        weather:"90f",
-        desc:"This place is super luxury having billionaires family"
+        image:AppImages.paris,
+        title:"Paris",
+        rating:"4.6+",
+        location:"France's capital,Western Europe"
     },
     {
         id:7,
         image:AppImages.corousel2,
-        title:"Sydney",
-        weather:"90f",
-        desc:"This place is super luxury having billionaires family"
+        title:"New York",
+        rating:"4.6+",
+        location:"New York State, Northeastern USA"
     },
     {
         id:8,
         image:AppImages.corousel2,
         title:"Toronto",
-        weather:"90f",
-        desc:"This place is super luxury having billionaires family"
+        rating:"4.6+",
+        location:"City in Ontario,Canada"
     },
     {
         id:9,
         image:AppImages.corousel2,
         title:"Lahore",
-        weather:"90f",
-        desc:"This place is super luxury having billionaires family"
+        rating:"4.6+",
+        location:"City in Punjab,Pakistan"
     },
     {
         id:10,
         image:AppImages.corousel2,
         title:"Islamabad",
-        weather:"90f",
-        desc:"This place is super luxury having billionaires family"
+        rating:"4.6+",
+        location:"Federal Territory Islamabad,Pakistan"
     },
     {
         id:11,
         image:AppImages.corousel2,
         title:"Mumbai",
-        weather:"90f",
-        desc:"This place is super luxury having billionaires family"
+        rating:"4.6+",
+        location:"City in West Coast,India"
     },
     {
         id:12,
         image:AppImages.corousel2,
         title:"Hong Kong",
-        weather:"90f",
-        desc:"This place is super luxury having billionaires family"
+        rating:"4.6+",
+        location:"French Polynesia"
     },
 ]

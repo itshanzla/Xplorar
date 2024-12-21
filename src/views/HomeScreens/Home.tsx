@@ -1,4 +1,5 @@
 import {
+  Animated,
   Image,
   ScrollView,
   StatusBar,
@@ -7,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
 import HomeHeader from '../../components/Headers/HomeHeader';
@@ -21,9 +22,52 @@ import {useSelector} from 'react-redux';
 import {AppFontSize} from '../../../assets/Texts/Fontsize';
 import RecommendComponent from '../../components/RecommendationFlatlist/RecommendComponent';
 import RecommendHeader from '../../components/Headers/RecommendHeader';
+import PopularFlat from '../../components/PopularFlatlist/PopularFlat';
+import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 const Home = () => {
+  const {t} = useTranslation();
+  const textArray = [
+    t('holidaydestinationonyourmind'),
+    t('explorenewadventureswithus'),
+    t('bookwithusandgetamazingdeals'),
+    t('planyourjourneywithus'),
+  ];
   const ThemeMode = useSelector((state: any) => state.theme.mode);
+  const navigation: any = useNavigation();
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [displayText, setDisplayText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const typingSpeed = 1;
+  const deletingSpeed = 1;
+  const delayBetweenLoops = 10;
+
+  useEffect(() => {
+    const handleTyping = () => {
+      const currentText = textArray[currentIndex];
+
+      if (isDeleting) {
+        setDisplayText(prev => prev.slice(0, prev.length - 1));
+      } else {
+        setDisplayText(prev => currentText.slice(0, prev.length + 1));
+      }
+      if (!isDeleting && displayText === currentText) {
+        setTimeout(() => setIsDeleting(true), delayBetweenLoops);
+      } else if (isDeleting && displayText === '') {
+        setIsDeleting(false);
+        setCurrentIndex(prev => (prev + 1) % textArray.length);
+      }
+    };
+
+    const timer = setTimeout(
+      handleTyping,
+      isDeleting ? deletingSpeed : typingSpeed,
+    );
+
+    return () => clearTimeout(timer);
+  }, [displayText, isDeleting, currentIndex, textArray]);
+
   return (
     <View
       style={{
@@ -32,42 +76,50 @@ const Home = () => {
       }}>
       <StatusBar
         barStyle={'light-content'}
-        backgroundColor={ThemeMode.primarycolor}
+        backgroundColor={ThemeMode.secondrybg}
       />
-      <View
-        style={[styles.headerView, {backgroundColor: ThemeMode.primarycolor}]}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 20,
-            alignItems: 'center',
-          }}>
-          <Text style={[styles.headertxt, {color: ThemeMode.white}]}>
-            Holiday Destination on your mind ?
-          </Text>
-          <TouchableOpacity activeOpacity={0.8} style={styles.headerbtn}>
-            <Image
-              tintColor={AppBaseColor.ivory}
-              resizeMode="contain"
-              style={styles.headerimg}
-              source={AppImages.Profile}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={{flex: 0.7}}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{flex: 1}}
-          contentContainerStyle={{flexGrow: 1}}>
-          <ContentHeader title="Highlights" subtitle="View all" />
+      <View style={{}}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View
+            style={[
+              styles.headerView,
+              {backgroundColor: ThemeMode.secondrybg},
+            ]}>
+            <View
+              style={{
+                flexDirection: 'row',
+                padding: 60,
+              }}>
+              <Text style={[styles.headertxt, {color: ThemeMode.white}]}>
+                {displayText}
+              </Text>
+              <TouchableOpacity activeOpacity={0.8} style={styles.headerbtn}>
+                <Image
+                  tintColor={AppBaseColor.ivory}
+                  resizeMode="contain"
+                  style={styles.headerimg}
+                  source={AppImages.Profile}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <ContentHeader
+            onPress={() => navigation.navigate('ContentCountries')}
+            title={t('highlights')}
+            subtitle={t('viewall')}
+          />
           <ContentFlatlist />
           <RecommendHeader
-            title="Popular Recommendations"
-            subtitle="Activities Handpicked by our Curators"
+            title={t('dontmissout')}
+            subtitle={t('activitieshandpicked')}
           />
           <RecommendFlat />
+          <ContentHeader
+            onPress={() => navigation.navigate('PopularScreen')}
+            title={t('populardestinations')}
+            subtitle={t('viewall')}
+          />
+          <PopularFlat />
         </ScrollView>
       </View>
     </View>
@@ -78,9 +130,10 @@ export default Home;
 
 const styles = StyleSheet.create({
   headerView: {
-    flex: 0.25,
+    // flex: 0.3,
     borderBottomLeftRadius: 80,
     borderBottomRightRadius: 80,
+    paddingTop: 20,
   },
   headerimg: {
     width: 32,
@@ -90,7 +143,10 @@ const styles = StyleSheet.create({
   headertxt: {
     fontFamily: Fonts.outfitBold,
     fontSize: AppFontSize.extralarge,
-    padding: 10,
+    position: 'absolute',
+    left: 20,
+    top: 20,
+    width: 260,
   },
   headerbtn: {
     width: 42,
@@ -99,6 +155,9 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     borderWidth: 2,
     borderColor: 'white',
+    position: 'absolute',
+    right: 20,
+    top: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },

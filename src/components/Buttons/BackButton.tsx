@@ -5,11 +5,12 @@ import { useSelector } from 'react-redux';
 interface BackButton{
     tintColor?:any
     onPress?:()=>void
+    stylemain?: any
 }
-const BackButton = ({tintColor,onPress}:BackButton) => {
+const BackButton = ({tintColor,onPress,stylemain}:BackButton) => {
   const ThemeMode = useSelector((state: any) => state.theme.mode);
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={[styles.btn,{backgroundColor:ThemeMode.primarycolor}]}>
+    <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={[styles.btn,stylemain,{backgroundColor:ThemeMode.primarycolor}]}>
       <Image tintColor={tintColor} style={styles.img} source={AppImages.leftnav} />
     </TouchableOpacity>
   );

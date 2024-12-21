@@ -11,6 +11,7 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 import ThemeReducer from './ThemeSlice';
+import countryReducer from '../Redux/RecommendedData'
 let persistConfig = {
   key: 'root',
   storage: AsyncStorage,
@@ -18,7 +19,8 @@ let persistConfig = {
 
 let rootReducer = combineReducers({
   user: AuthSlice,
-  theme: ThemeReducer
+  theme: ThemeReducer,
+  country: countryReducer
 });
 
 let persistedReducer = persistReducer(persistConfig, rootReducer);

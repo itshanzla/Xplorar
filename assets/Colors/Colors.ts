@@ -10,5 +10,10 @@ export const AppBaseColor = {
     lightGray:"#f2f5fa",
     ivory:"#FFFFF0",
     pearlwhite:"#F8F6F0",
-    purple : "#7D5683"
+    purple : "#7D5683",
+    darkSecondry:"#E7E4F0",
+    cardBg:"#352454",
+    darkprimary:"#1B0D35",
+    darkmedium: "#9389A0",
+    lightptofilebg : "#4D98A6"
 }

@@ -10,7 +10,7 @@ import React from 'react';
 import {AppFontSize} from '../../../assets/Texts/Fontsize';
 import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 interface ContentComponent {
   source?: any;
   title?: string;
@@ -28,23 +28,33 @@ const ContentComponent = ({
   const {width} = useWindowDimensions();
   const ThemeMode = useSelector((state: any) => state.theme.mode);
   return (
-    <View style={[styles.main, {width: width / 2}]}>
+    <View
+      style={[
+        styles.main,
+        {
+          width: 180,
+          backgroundColor:
+            ThemeMode.mode === 'light'
+              ? AppBaseColor.white
+              : AppBaseColor.cardBg,
+        },
+      ]}>
       <TouchableOpacity
         onPress={onPress}
         activeOpacity={0.8}
         style={styles.btn}>
-        <Image resizeMode="contain" style={styles.img} source={source} />
-        <View style={{}}>
+        <Image resizeMode="cover" style={styles.img} source={source} />
+        <View>
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
               marginTop: 10,
             }}>
-            <Text style={[styles.title,{color:ThemeMode.wnb}]}>{title}</Text>
+            <Text style={[styles.title, {color: ThemeMode.wnb}]}>{title}</Text>
           </View>
-          <Text numberOfLines={2} ellipsizeMode="tail" style={[styles.desc,{color:ThemeMode.wngray}]}>
+          <Text
+            numberOfLines={2}
+            ellipsizeMode="tail"
+            style={[styles.desc, {color: ThemeMode.wngray}]}>
             {desc}
           </Text>
         </View>
@@ -57,13 +67,17 @@ export default ContentComponent;
 
 const styles = StyleSheet.create({
   main: {
-    marginTop: 10,
-    // marginHorizontal:18
+    elevation: 8,
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
+    marginLeft: 10,
+    height: 220,
   },
   img: {
-    width: 161,
+    width: '100%',
     height: 146,
-   
+    borderRadius: 10,
   },
   desc: {
     fontSize: AppFontSize.smalltxt,
@@ -71,7 +85,7 @@ const styles = StyleSheet.create({
     color: AppBaseColor.red,
   },
   title: {
-    fontSize:AppFontSize.largetext,
+    fontSize: AppFontSize.largetext,
     fontFamily: Fonts.outfitSemiBold,
   },
   weather: {
@@ -80,7 +94,8 @@ const styles = StyleSheet.create({
     color: AppBaseColor.yellow,
   },
   btn: {
-    width: 161,
+    width: '100%',
     height: 200,
+    borderRadius: 10,
   },
 });

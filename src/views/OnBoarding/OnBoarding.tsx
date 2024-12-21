@@ -53,7 +53,7 @@ const OnBoarding = ({onComplete}: OnBoarding) => {
   const RenderItem = ({item}: any) => {
     return (
       <OnboardView
-        image={item?.image}
+        image={ThemeMode.mode === 'light' ?  item?.image : item?.darkimage}
         title={t(item?.title)}
         desc={t(item?.desc)}
       />
@@ -76,6 +76,7 @@ const OnBoarding = ({onComplete}: OnBoarding) => {
     title: t(item?.title),
     desc: t(item?.desc),
     image: item?.image,
+    darkimage: item?.darkimage
   }));
 
   const checkLng = async () => {

@@ -68,7 +68,7 @@ const Fluidbutton = ({percentage,scrollTo,currentIndex,onPress}:Fluidbutton) => 
           />
           <Circle
           ref={progressRef}
-            stroke={ThemeMode.mode === 'light' ? AppBaseColor.lightgreen : '#7D5683'}
+            stroke={ThemeMode.mode === 'light' ? AppBaseColor.lightgreen : '#1B0D35'}
             cx={center}
             cy={center}
             r={radius}

@@ -1,11 +1,11 @@
 {
   "mode": "dark",
-  "primarybackground": "#140520",
-  "secondrybg": "#2E2D2D",
-  "primarycolor": "#7D5683",
-  "primarytext": "#C9BFB5",
-  "secondrytext": "#E2E9FF",
-  "secondrycolor" : "E2E9FF",
+  "primarybackground": "#1B0D35",
+  "secondrybg": "#352454",
+  "primarycolor": "#9389A0",
+  "primarytext": "#FFFFFF",
+  "secondrytext": "#E7E4F0",
+  "secondrycolor" : "#E2E9FF",
   "black": "#333333",
   "white": "#FFFFFF",
   "wngray" : "#FFFFFF",
@@ -13,5 +13,6 @@
   "modeicon": "#E2E9FF",
   "icon": "#f8f9fa",
   "firsttxt": "#C9BFB5",
-  "secondtxt": "#E2E9FF"
+  "secondtxt": "#E2E9FF",
+  "Darkbg" : "#352454"
 }

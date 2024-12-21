@@ -5,25 +5,29 @@ export default [
         id:1,
         title : "OnBoardHeader1",
         desc: "OnBoardDesc1",
-        image : AppImages.onboarding
+        image : AppImages.onboarding,
+        darkimage: AppImages.darkonboard1
     },
     {
         id:2,
         title : "OnBoardHeader2",
         desc: "OnBoardDesc2",
-        image : AppImages.onboarding3
+        image : AppImages.onboarding3,
+        darkimage : AppImages.onboarding3
     },
     {
         id:3,
         title : "OnBoardHeader3",
         desc: "OnBoardDesc3",
-        image : AppImages.onboarding2
+        image : AppImages.onboarding2,
+        darkimage : AppImages.onboarding2
     },
     {
         id:4,
         title : "OnBoardHeader4",
         desc: "OnBoardDesc4",
-        image : AppImages.onboarding4
+        image : AppImages.onboarding4,
+        darkimage : AppImages.onboarding4
     },
 
 ]

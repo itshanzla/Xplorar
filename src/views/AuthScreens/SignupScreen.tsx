@@ -127,7 +127,7 @@ const SignupScreen = () => {
                     </Text>
                   </Text>
                 </Text>
-                <Text style={[styles.desc, {color: ThemeMode.primarycolor}]}>
+                <Text style={[styles.desc, {color: ThemeMode.secondrytext}]}>
                   {t('Unlockendlessjourneysahead')}
                 </Text>
                 <TextFields
@@ -203,7 +203,7 @@ const SignupScreen = () => {
                         color:
                           ThemeMode.mode === 'light'
                             ? AppBaseColor.lightgreen
-                            : AppBaseColor.pearlwhite,
+                            : AppBaseColor.white,
                       },
                     ]}>
                     {t('Byclicking')}
@@ -212,7 +212,7 @@ const SignupScreen = () => {
                         color:
                           ThemeMode.mode === 'light'
                             ? AppBaseColor.blue
-                            : AppBaseColor.blue,
+                            : AppBaseColor.darkSecondry,
                       }}>
                       {t('Signup')}
                       <Text
@@ -220,7 +220,7 @@ const SignupScreen = () => {
                           color:
                             ThemeMode.mode === 'light'
                               ? AppBaseColor.lightgreen
-                              : AppBaseColor.pearlwhite,
+                              : AppBaseColor.white,
                         }}>
                         ,{t('youagreetoour')}
                         <Text
@@ -228,7 +228,7 @@ const SignupScreen = () => {
                             color:
                               ThemeMode.mode === 'light'
                                 ? AppBaseColor.lightblue
-                                : AppBaseColor.yellow,
+                                : AppBaseColor.darkSecondry,
                             marginTop: 5,
                           }}>
                           {t('terms')}
@@ -237,7 +237,7 @@ const SignupScreen = () => {
                               color:
                                 ThemeMode.mode === 'light'
                                   ? AppBaseColor.lightgreen
-                                  : AppBaseColor.pearlwhite,
+                                  : AppBaseColor.white,
                             }}>
                             {t('and')}
                             <Text
@@ -245,7 +245,7 @@ const SignupScreen = () => {
                                 color:
                                   ThemeMode.mode === 'light'
                                     ? AppBaseColor.lightblue
-                                    : AppBaseColor.yellow,
+                                    : AppBaseColor.darkSecondry,
                               }}>
                               {t('policies')}
                             </Text>
