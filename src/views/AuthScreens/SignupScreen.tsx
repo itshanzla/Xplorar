@@ -61,14 +61,21 @@ const SignupScreen = () => {
 
   const handleRegister = async () => {
     SetLoading(true);
+    const APIurl = 'https://drxqqzhvc9.execute-api.us-east-1.amazonaws.com/register'
     try {
-      await axios.post('http://192.168.10.3:3000/register', {
-        Username: Name.trim(),
-        email: Email.trim(),
-        password: Password,
+    const response =  await fetch(APIurl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Username: Name.trim(),
+          email: Email.trim(),
+          password: Password,
+        }),
       });
-      SetMessage('Registration Successful');
-      console.log(Message);
+      const data = await response.json()
+      console.log("Data is:",data)
       Setname('');
       SetEmail('');
       SetPassword('');
@@ -101,11 +108,16 @@ const SignupScreen = () => {
                 alignItems: 'center',
                 flex: 1,
               }}>
-                <BackButton tintColor={AppBaseColor.white} />
+              <BackButton tintColor={AppBaseColor.white} />
               <KeyboardAvoidingView
                 style={[
                   styles.loginView,
-                  {backgroundColor: ThemeMode.secondrybg},
+                  {
+                    backgroundColor:
+                      ThemeMode.mode === 'light'
+                        ? AppBaseColor.pearlwhite
+                        : AppBaseColor.cardBg,
+                  },
                 ]}>
                 <Text
                   style={{

@@ -3,14 +3,16 @@ import React from 'react';
 import {AppImages} from '../../../assets/images/AppImages';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
+import { useSelector } from 'react-redux';
 interface SearchField {
   placeholder?: string;
   search?: boolean;
 }
 const SearchField = ({placeholder, search}: SearchField) => {
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
   return (
     <View style={styles.main}>
-      <View style={styles.container}>
+      <View style={[styles.container,{backgroundColor:ThemeMode.mode === 'light' ? AppBaseColor.ivory : AppBaseColor.darkSecondry}]}>
         {search && <Image source={AppImages.Search} style={styles.img} />}
         <TextInput
           placeholderTextColor={AppBaseColor.black}

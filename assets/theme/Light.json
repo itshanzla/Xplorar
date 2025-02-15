@@ -14,5 +14,6 @@
   "icon" : "#212529",
   "firsttxt" : "#007A8C",
   "secondtxt" : "#336749",
-  "Darkbg" : "#FFFFFF"
+  "Darkbg" : "#FFFFFF",
+  "borderColor":"#FFFFFF"
 }

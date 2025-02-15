@@ -15,5 +15,6 @@ export const AppBaseColor = {
     cardBg:"#352454",
     darkprimary:"#1B0D35",
     darkmedium: "#9389A0",
-    lightptofilebg : "#4D98A6"
+    lightptofilebg : "#4D98A6",
+    darkbcolor: "#C5C0D1"
 }

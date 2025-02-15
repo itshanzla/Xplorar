@@ -168,6 +168,7 @@ const OnBoarding = ({onComplete}: OnBoarding) => {
         currentIndex={currentIndex}
         onPress={() => {
           navigation.navigate('LoginLanding');
+          onComplete(true)
         }}
       />
     </View>

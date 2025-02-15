@@ -3,6 +3,7 @@ import {
   ImageBackground,
   PermissionsAndroid,
   Platform,
+  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -19,26 +20,35 @@ import {AppFontSize} from '../../../assets/Texts/Fontsize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from '../../../i18n';
 import SelectLangModel from '../../components/Modals/SelectLangModel';
-import LangBtn from '../../components/Buttons/LangBtn';
 import {useDispatch, useSelector} from 'react-redux';
 import {toggleTheme} from '../Redux/ThemeSlice';
-import {useNavigation} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import ImagePickerModal from '../../components/Modals/ImagePickerModal';
 import ImagePicker from 'react-native-image-crop-picker';
-import {PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 import {useTranslation} from 'react-i18next';
+import LogoutModal from '../../components/Modals/LogoutModal';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+import {removeUser, setUser} from '../Redux/AuthSlice';
 
 const Profile = () => {
   const [notify, setNotify] = useState<boolean>(false);
   const [selectlanguage, setSelectLanguage] = useState<string>('English');
   const [showModal, setShowModal] = useState<boolean>(false);
   const [viewModal, setViewModal] = useState<boolean>(false);
+  const [viewLogoutModal, setLogoutModal] = useState<boolean>(false);
   const [ProfileImg, setProfileImg] = useState<string>('');
+  const [CurrentUser,SetCurrentUser] = useState<any>('')
   const {t} = useTranslation();
   const ThemeMode = useSelector((state: any) => state.theme.mode);
-  const ProfileImage =
-    'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngall.com%2Fprofile-png%2Fdownload%2F51602%2F&psig=AOvVaw2vp2O7X6ZLC0e9QU2PtFeQ&ust=1734681544862000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCIijksGus4oDFQAAAAAdAAAAABAE';
-  console.log('ProfileImage is =>', ProfileImage);
+  const User = useSelector((state: any) => state.user);
+  const UserIs = async() => {
+    SetCurrentUser(await User);
+  }
+  useEffect(()=>{
+    UserIs();
+    console.log("Current User is=>",CurrentUser)
+  },[])
   const [DarkMode, setDarkMode] = useState(
     ThemeMode.mode == 'dark' ? true : false,
   );
@@ -50,6 +60,22 @@ const Profile = () => {
   const handleTheme = () => {
     setDarkMode(!DarkMode);
     dispatch(toggleTheme());
+  };
+  const onGoogleLogoutPress = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: false});
+      await GoogleSignin.signOut();
+      dispatch(removeUser()),
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'AuthStack'}],
+        }),
+      )
+      setLogoutModal(false);
+    } catch (err) {
+      console.log('Logout Unsuccessful', err);
+    }
   };
   const checkLng = async () => {
     const x = await AsyncStorage.getItem('LANG');
@@ -70,7 +96,7 @@ const Profile = () => {
   };
   useEffect(() => {
     checkLng();
-  }, []);
+  }, [selectlanguage]);
 
   const openCamera = async () => {
     try {
@@ -80,7 +106,6 @@ const Profile = () => {
         cropping: true,
       })
         .then((image: any) => {
-          console.log('Image is this=>', image?.path);
           setProfileImg(image?.path);
         })
         .then(() => setViewModal(false));
@@ -97,7 +122,6 @@ const Profile = () => {
         cropping: true,
       })
         .then((image: any) => {
-          console.log('image is this =>', image?.path);
           setProfileImg(image?.path);
         })
         .then(() => setViewModal(false));
@@ -106,13 +130,22 @@ const Profile = () => {
     }
   };
   return (
-    <View style={{flex: 1, backgroundColor: ThemeMode.primarybackground}}>
+    <SafeAreaView
+      style={{flex: 1, backgroundColor: ThemeMode.primarybackground}}>
       <StatusBar
         translucent
         barStyle={
           ThemeMode?.mode === 'light' ? 'dark-content' : 'light-content'
         }
         backgroundColor={'transparent'}
+      />
+      <LogoutModal
+        visible={viewLogoutModal}
+        onclose={() => {
+          setLogoutModal(false);
+        }}
+        cancel={() => setLogoutModal(false)}
+        proceed={() => onGoogleLogoutPress()}
       />
       <SelectLangModel
         visible={showModal}
@@ -137,6 +170,24 @@ const Profile = () => {
         }}
         selectedLanguage={selectlanguage}
       />
+      <TouchableOpacity
+        onPress={() => setLogoutModal(true)}
+        style={{
+          width: 40,
+          height: 40,
+          position: 'absolute',
+          top: 30,
+          right: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1,
+        }}>
+        <Image
+          style={{width: 25, height: 25}}
+          source={AppImages?.logout}
+          tintColor={ThemeMode.wnb}
+        />
+      </TouchableOpacity>
       <ImagePickerModal
         visible={viewModal}
         onclose={() => {
@@ -159,7 +210,13 @@ const Profile = () => {
         <Image
           style={styles.profilebg}
           resizeMode="contain"
-          source={ProfileImg ? {uri: ProfileImg} : AppImages?.profileimg}
+          source={
+            ProfileImg
+              ? {uri: ProfileImg}
+              : AppImages?.profileimg && User.userData.pic
+              ? {uri: User.userData.pic}
+              : AppImages?.profileimg
+          }
         />
         <TouchableOpacity
           activeOpacity={0.9}
@@ -179,14 +236,12 @@ const Profile = () => {
             tintColor={ThemeMode.wngray}
           />
         </TouchableOpacity>
-        <Text style={[styles.name, {color: ThemeMode?.wnb}]}>Puerto Rico</Text>
+        <Text style={[styles.name, {color: ThemeMode?.wnb}]}>
+          {User.userData != null ? User?.userData?.first_name : 'PuertoRico'}
+        </Text>
         <View style={{flexDirection: 'row'}}>
           <Text style={[styles.txt1, {color: ThemeMode?.wngray}]}>
-            Youremail@gmail.com
-          </Text>
-          <Text style={[styles.txt1, {color: ThemeMode?.wngray}]}>||</Text>
-          <Text style={[styles.txt1, {color: ThemeMode?.wngray}]}>
-            +92 03001234567
+            {User.userData != null ? User?.userData?.Email : 'Youremail@gmail.com'}
           </Text>
         </View>
       </View>
@@ -394,7 +449,7 @@ const Profile = () => {
               justifyContent: 'space-between',
               marginBottom: 10,
             }}
-            onPress={()=>navigation.navigate('PrivacyPolicy')}
+            onPress={() => navigation.navigate('PrivacyPolicy')}
             activeOpacity={0.8}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
@@ -410,7 +465,7 @@ const Profile = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

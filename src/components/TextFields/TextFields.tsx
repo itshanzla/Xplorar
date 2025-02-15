@@ -70,6 +70,7 @@ const TextFields = ({
             {
               paddingHorizontal: icons ? 5 : 0 || ispassword ? 10 : 0,
               width: icons && ispassword ? '83%' : '90%',
+              color:ThemeMode.mode === 'light' ? AppBaseColor.black : AppBaseColor.white
             },
           ]}
           placeholder={Placeholder}

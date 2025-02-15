@@ -1,6 +1,7 @@
 import {
   Animated,
   Image,
+  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -25,6 +26,7 @@ import RecommendHeader from '../../components/Headers/RecommendHeader';
 import PopularFlat from '../../components/PopularFlatlist/PopularFlat';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
+import HotelScreen from '../../components/Hotel/HotelScreen';
 
 const Home = () => {
   const {t} = useTranslation();
@@ -69,7 +71,7 @@ const Home = () => {
   }, [displayText, isDeleting, currentIndex, textArray]);
 
   return (
-    <View
+    <SafeAreaView
       style={{
         backgroundColor: ThemeMode.primarybackground,
         flex: 1,
@@ -78,7 +80,7 @@ const Home = () => {
         barStyle={'light-content'}
         backgroundColor={ThemeMode.secondrybg}
       />
-      <View style={{}}>
+      <View>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View
             style={[
@@ -120,9 +122,13 @@ const Home = () => {
             subtitle={t('viewall')}
           />
           <PopularFlat />
+          <ContentHeader 
+            title={t('Hotels')}
+            subtitle={t('viewall')} />
+            {/* <HotelScreen /> */}
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

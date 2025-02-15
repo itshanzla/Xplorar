@@ -1,21 +1,36 @@
-import { StatusBar, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { AppBaseColor } from '../../../assets/Colors/Colors'
-import { Fonts } from '../../../android/app/src/main/assets/fonts/Fonts'
-import SearchField from '../../components/SearchComp/SearchField'
+import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {AppBaseColor} from '../../../assets/Colors/Colors';
+import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
+import SearchField from '../../components/SearchComp/SearchField';
+import {useSelector} from 'react-redux';
 
-const Search = ({navigation} : any) => {
+const Search = ({navigation}: any) => {
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
   return (
-    <View style={{backgroundColor:AppBaseColor.ivory,flex:1}}>
+    <View
+      style={{
+        backgroundColor:
+          ThemeMode.mode === 'light'
+            ? AppBaseColor.pearlwhite
+            : AppBaseColor.darkprimary,
+        flex: 1,
+      }}>
       <StatusBar
-        barStyle={'dark-content'}
-        backgroundColor={AppBaseColor.ivory}
+        barStyle={ThemeMode.mode === 'light' ? 'dark-content' : 'light-content'}
+        backgroundColor={
+          ThemeMode.mode === 'light'
+            ? AppBaseColor.pearlwhite
+            : AppBaseColor.darkprimary
+        }
       />
-      <SearchField search placeholder='Search' />
+      <View style={{marginTop: 20}}>
+        <SearchField search placeholder="Search" />
+      </View>
     </View>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

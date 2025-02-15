@@ -10,7 +10,7 @@
   "Apptitle": "Explorar",
   "Description": "Descubre el mundo con facilidad y haz que cada viaje sea inolvidable. Ya sea que estés planeando tu próxima aventura o simplemente explorando lugares cercanos",
   "LoginWithEmail": "Iniciar sesión con correo electrónico",
-  "DoesntHaveanAccount?": "¿No tiene una cuenta?",
+  "DoesntHaveanAccount": "¿No tiene una cuenta?",
   "login": "Iniciar sesión",
   "signup": "Inscribirse",
   "Loginwithgoogle": "Iniciar sesión con Google",

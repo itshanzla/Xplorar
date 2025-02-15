@@ -56,7 +56,7 @@ const ForgotPassword = () => {
               <KeyboardAvoidingView
                 style={[
                   styles.loginView,
-                  {backgroundColor: ThemeMode.secondrybg},
+                  {backgroundColor: ThemeMode.mode === 'light' ? AppBaseColor.pearlwhite : AppBaseColor.cardBg},
                 ]}>
                 <Text style={[styles.txt1, {color: ThemeMode.firsttxt}]}>
                   {t('ForgotPassword')}

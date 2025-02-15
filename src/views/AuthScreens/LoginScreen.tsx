@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   ImageBackground,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -7,7 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import StatusBarNormal from '../../components/StatusBar/StatusBarNormal';
 import StatusBarTrans from '../../components/StatusBar/StatusBarTrans';
 import {AppImages} from '../../../assets/images/AppImages';
@@ -20,8 +21,9 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import {useTranslation} from 'react-i18next';
 import BackButton from '../../components/Buttons/BackButton';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
+import {setUser} from '../Redux/AuthSlice';
 // import NotifyToast from '../../components/NotifyToast/NotifyToast';
 
 const LoginScreen = () => {
@@ -34,52 +36,110 @@ const LoginScreen = () => {
   const [Toastmsg, setToastmsg] = useState<any>('');
   const {t} = useTranslation();
   const ThemeMode = useSelector((state: any) => state.theme.mode);
+  const dispatch = useDispatch();
+
   // const visibleToast = (message:any) => {
   //   setToastmsg(message)
   //   setShowToast(true);
   //   setTimeout(() => {
   //     setShowToast(false);
   //   }, 3000);
-  // }; 
-  // const handleLogin = async () => {
-  //   try {
-  //     if (Email != '' && Password != '') {
-  //       const isUserSignin = await auth().signInWithEmailAndPassword(
-  //         Email,
-  //         Password,
-  //       );
-  //       const data = {
-  //         email: Email,
-  //         passsword: Password,
-  //       };
-  //       navigation.dispatch(
-  //         CommonActions.reset({
-  //           index: 0,
-  //           routes: [{name: 'HomeStack'}],
-  //         }),
-  //       );
-  //       SetEmail('');
-  //       SetPassword('');
-  //     } else {
-  //       console.log('Signin Cancelled');
-  //     }
-  //   } catch (err : any) {
-  //     // visibleToast(err?.message)
-  //     console.error(err)
-  //   }
   // };
 
   const handleLogin = async () => {
+    SetLoading(true);
+    const APIURL =
+      'https://drxqqzhvc9.execute-api.us-east-1.amazonaws.com/login';
     try {
-      const response = await axios.post('http://192.168.10.3:3000/login', {
-        email: Email.trim(),
-        password: Password,
-      });
-      console.log('Login Successful=>', response.data.token);
+      if (Email == '' && Password == '') {
+        console.error('Both Fields are required');
+      } else {
+        const response = await fetch(APIURL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: Email.trim(),
+            password: Password,
+          }),
+        });
+        dispatch(setUser(response.json()));
+        SetEmail('');
+        SetPassword('');
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'HomeStack'}],
+          }),
+        );
+        SetLoading(false);
+      }
     } catch (err) {
-      console.log('Login failed because =>', err);
+      console.error('Login Failed=>', err);
     }
   };
+
+  // const handleCurrencyrates = async () => {
+  //   const url =
+  //     'https://booking-com15.p.rapidapi.com/api/v1/meta/getExchangeRates?base_currency=USD';
+  //   try {
+  //     const data = await fetch(url, {
+  //       method: 'GET',
+  //       headers: {
+  //         'x-rapidapi-key':
+  //           '4f2013887amsh7816108ac2bd269p190f1fjsn90dd3443844f',
+  //         'x-rapidapi-host': 'booking-com15.p.rapidapi.com',
+  //       },
+  //     });
+  //     const convertedData = data.text();
+  //     console.log('data from Api is =>', await convertedData);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+  // const handleLocation = async () => {
+  //   const url =
+  //     'https://booking-com15.p.rapidapi.com/api/v1/meta/locationToLatLong?query=man';
+  //   try {
+  //     const data = await fetch(url, {
+  //       method: 'GET',
+  //       headers: {
+  //         'x-rapidapi-key':
+  //           '4f2013887amsh7816108ac2bd269p190f1fjsn90dd3443844f',
+  //         'x-rapidapi-host': 'booking-com15.p.rapidapi.com',
+  //       },
+  //     });
+  //     const convertedData = data.text();
+  //     console.log('data from Api is =>', await convertedData);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+  // const handleHotels = async () => {
+  //   const url =
+  //     'https://booking-com15.p.rapidapi.com/api/v1/attraction/searchLocation?query=new&languagecode=en-us';
+  //   try {
+  //     const data = await fetch(url, {
+  //       method: 'GET',
+  //       headers: {
+  //         'x-rapidapi-key':
+  //           '4f2013887amsh7816108ac2bd269p190f1fjsn90dd3443844f',
+  //         'x-rapidapi-host': 'booking-com15.p.rapidapi.com',
+  //       },
+  //     });
+  //     const convertedData = await data.text();
+  //     console.log('data from Api is =>', convertedData);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+  
+
+  // useEffect(() => {
+  //   handleHotelDestination();
+  // }, []);
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.main}>
@@ -108,7 +168,12 @@ const LoginScreen = () => {
               <KeyboardAvoidingView
                 style={[
                   styles.loginView,
-                  {backgroundColor: ThemeMode.secondrybg},
+                  {
+                    backgroundColor:
+                      ThemeMode.mode === 'light'
+                        ? AppBaseColor.pearlwhite
+                        : AppBaseColor.cardBg,
+                  },
                 ]}>
                 <Text style={[styles.txt1, {color: ThemeMode.firsttxt}]}>
                   {t('lets')}
@@ -163,6 +228,7 @@ const LoginScreen = () => {
                   title={t('login')}
                   mainStyle={{marginTop: 20}}
                   onpress={() => handleLogin()}
+                  Loading={Loading}
                 />
                 <View
                   style={{
@@ -192,9 +258,9 @@ const LoginScreen = () => {
       </View>
       {/* <View style={{justifyContent:'center',alignItems:'center'}}>
         <NotifyToast
-        message={Toastmsg}
-        visible={showToast}
-        type={'ERROR'}
+          message={Toastmsg}
+          visible={showToast}
+          type={'ERROR'}
         />
       </View> */}
     </SafeAreaView>

@@ -92,8 +92,56 @@ export const countriesData = [
         country:'Luxemborg',
         city:'Echternach Town',
         canceltxt:'Free cancellation',
-        price:'from $230 per adult',
+        price:'from $26 per adult',
         image:require('../../../assets/images/country12.png')
+    },
+    {
+        id:13,
+        country:'France',
+        city:'Paris',
+        canceltxt:'Free cancellation',
+        price:'from $40 per adult',
+        image:require('../../../assets/images/country13.jpg')
+    },
+    {
+        id:14,
+        country:'Italy',
+        city:'Rome',
+        canceltxt:'Free cancellation',
+        price:'from $35 per adult',
+        image:require('../../../assets/images/country14.jpg')
+    },
+    {
+        id:15,
+        country:'Italy',
+        city:'Florence',
+        canceltxt:'Free cancellation',
+        price:'from $35 per adult',
+        image:require('../../../assets/images/country15.jpg')
+    },
+    {
+        id:16,
+        country:'Italy',
+        city:'Venice',
+        canceltxt:'Free cancellation',
+        price:'from $35 per adult',
+        image:require('../../../assets/images/country16.jpg')
+    },
+    {
+        id:17,
+        country:'United Kingdom',
+        city:'Manchester',
+        canceltxt:'Free cancellation',
+        price:'from $35 per adult',
+        image:require('../../../assets/images/country17.jpg')
+    },
+    {
+        id:18,
+        country:'Spain',
+        city:'Barcelona',
+        canceltxt:'Free cancellation',
+        price:'from $45 per adult',
+        image:require('../../../assets/images/country15.jpg')
     },
     
 ] 

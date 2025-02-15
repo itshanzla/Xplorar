@@ -1,4 +1,3 @@
-
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -10,24 +9,33 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
 import ForgotPassword from '../AuthScreens/ForgotPassword/ForgotPassword';
 import ResetPassword from '../AuthScreens/ForgotPassword/ResetPassword';
-
+import {useSelector} from 'react-redux';
+import SplashScreen from '../../components/Splash/SplashScreen';
 
 const Stack = createNativeStackNavigator();
-
-const AuthStack = () => {
+interface AuthStack {
+  ScreenLoading?: boolean;
+}
+const AuthStack = ({}: AuthStack) => {
   const [isFirstLaunch, setIsFirstLaunch] = useState<boolean | null>(null);
+  const [ScreenLoading, setScreenLoading] = useState<boolean>(true);
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
 
   useEffect(() => {
     const checkOnboarding = async () => {
+      setScreenLoading(true);
       try {
-        const hasCompletedOnBoarding = await AsyncStorage.getItem('onBoardingCompleted');
-        console.log('onBoardingCompleted value:', hasCompletedOnBoarding);
+        const hasCompletedOnBoarding = await AsyncStorage.getItem('onComplete');
         if (hasCompletedOnBoarding != null) {
           setIsFirstLaunch(true);
         } else {
           setIsFirstLaunch(false);
         }
+        setTimeout(() => {
+          setScreenLoading(false);
+        }, 500);
       } catch (error) {
+        setScreenLoading(false);
         console.error('Error checking onboarding:', error);
       }
     };
@@ -36,17 +44,25 @@ const AuthStack = () => {
 
   const completeOnboarding = async () => {
     try {
-      await AsyncStorage.setItem('onBoardingCompleted', 'true');
+      await AsyncStorage.setItem('onComplete', 'true');
       setIsFirstLaunch(false);
-      console.log('Onboarding completed and saved to AsyncStorage');
     } catch (error) {
       console.error('Error setting onboarding completed:', error);
     }
   };
-  if (isFirstLaunch === null) {
+  if (ScreenLoading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size={'large'} color={AppBaseColor.blue} />
+      <View
+        style={[
+          styles.loadingContainer,
+          {
+            backgroundColor:
+              ThemeMode.mode === 'light'
+                ? AppBaseColor?.blue
+                : AppBaseColor?.darkprimary,
+          },
+        ]}>
+        <SplashScreen />
       </View>
     );
   }
@@ -74,6 +90,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
   },
 });

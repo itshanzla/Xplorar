@@ -52,7 +52,7 @@ const ContentComponent = ({
             <Text style={[styles.title, {color: ThemeMode.wnb}]}>{title}</Text>
           </View>
           <Text
-            numberOfLines={2}
+            numberOfLines={1}
             ellipsizeMode="tail"
             style={[styles.desc, {color: ThemeMode.wngray}]}>
             {desc}

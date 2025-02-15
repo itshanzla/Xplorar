@@ -4,7 +4,7 @@ import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {AppFontSize} from '../../../assets/Texts/Fontsize';
 import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
 import {AppImages} from '../../../assets/images/AppImages';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 interface CountriesComp {
   source?: any;
   city?: string;
@@ -32,24 +32,39 @@ const CountriesComp = ({
       <TouchableOpacity
         onPress={onPress}
         activeOpacity={0.8}
-        style={[styles.btn,{backgroundColor:ThemeMode.mode === 'light' ? AppBaseColor.white : AppBaseColor.cardBg}]}>
+        style={[
+          styles.btn,
+          {
+            backgroundColor:
+              ThemeMode.mode === 'light'
+                ? AppBaseColor.white
+                : AppBaseColor.cardBg,
+          },
+        ]}>
         <Image style={styles.img} source={source} resizeMode="cover" />
         <View style={{zIndex: 1}}>
-          <Text style={[styles.txt1,{color:ThemeMode.wnb}]}>{city}</Text>
-          <Text style={[styles.txt2,{color:ThemeMode.wngray}]}>{country}</Text>
+          <Text style={[styles.txt1, {color: ThemeMode.wnb}]}>{city}</Text>
+          <Text style={[styles.txt2, {color: ThemeMode.wngray}]}>
+            {country}
+          </Text>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
               resizeMode="contain"
               source={AppImages.currency}
               style={styles.currency}
-              
             />
-            <Text style={[styles.cancel,{color:ThemeMode.wnb}]}>{cancel}</Text>
+            <Text style={[styles.cancel, {color: ThemeMode.wnb}]}>
+              {cancel}
+            </Text>
             <TouchableOpacity activeOpacity={0.5} style={styles.infobtn}>
-              <Image tintColor={ThemeMode.wnb} source={AppImages.cancelinfo} style={styles.cancelinfo} />
+              <Image
+                tintColor={ThemeMode.wnb}
+                source={AppImages.cancelinfo}
+                style={styles.cancelinfo}
+              />
             </TouchableOpacity>
           </View>
-          <Text style={[styles.price,{color:ThemeMode.wnb}]}>{price}</Text>
+          <Text style={[styles.price, {color: ThemeMode.wnb}]}>{price}</Text>
         </View>
       </TouchableOpacity>
     </View>

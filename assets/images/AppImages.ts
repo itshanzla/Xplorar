@@ -40,7 +40,7 @@ export const AppImages={
     corousel3 : require('../images/corousel-3.jpg'),
     corousel4 : require('../images/corousel-4.jpg'),
     cologne : require('../images/cologne.png'),
-    abudhabi : require('../images/abudhabi.png'),
+    abudhabi : require('../images/abudhabi1.png'),
     bigben : require('../images/bigben.png'),
     istanbul : require('../images/istanbul.png'),
     dropdown : require('../images/dropdown.png'),
@@ -122,6 +122,8 @@ export const AppImages={
     hongkong : require('../images/hongkong.jpg'),
     abudhabi1 : require('../images/abudhabi.jpg'),
     darkprofilebg : require('../images/darkprofilebg.png'),
+    logout : require('../images/logout.png'),
+    arrowrights : require('../images/arrowright.png'),
     
     
     

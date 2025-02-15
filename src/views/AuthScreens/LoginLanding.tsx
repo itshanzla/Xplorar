@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   StatusBar,
@@ -6,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {AppImages} from '../../../assets/images/AppImages';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {AppFontSize} from '../../../assets/Texts/Fontsize';
@@ -18,7 +19,7 @@ import StatusBarTrans from '../../components/StatusBar/StatusBarTrans';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import {useDispatch, useSelector} from 'react-redux';
-import {addData, setUser} from '../Redux/AuthSlice.';
+import {addData, setUser} from '../Redux/AuthSlice';
 import {useTranslation} from 'react-i18next';
 
 GoogleSignin.configure({
@@ -27,6 +28,7 @@ GoogleSignin.configure({
 });
 const LoginLanding = () => {
   const navigation: any = useNavigation();
+  const [Loading,setisLoading] = useState<any>(false)
   const ThemeMode = useSelector((state: any) => state.theme.mode);
   const {t} = useTranslation();
   const dispatch = useDispatch();
@@ -41,6 +43,7 @@ const LoginLanding = () => {
   // };
   const onGoogleButtonPress = async () => {
     try {
+      setisLoading(true)
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
       const idToken: any = (await GoogleSignin.signIn()).data?.idToken;
       const user: any = (await GoogleSignin.signIn()).data?.user;
@@ -61,9 +64,10 @@ const LoginLanding = () => {
           routes: [{name: 'HomeStack'}],
         }),
       );
+      setisLoading(false)
       return auth().signInWithCredential(googleCredentials);
     } catch (err: any) {
-      // visibleToast(err?.message);
+      setisLoading(false)
       console.error(err);
     }
   };
@@ -71,6 +75,7 @@ const LoginLanding = () => {
   return (
     <View style={styles.main}>
       <StatusBarTrans />
+      
       <Image
         resizeMode="cover"
         style={styles.img}
@@ -81,7 +86,7 @@ const LoginLanding = () => {
       <View
         style={[
           styles.ChildContainer,
-          {backgroundColor: ThemeMode.secondrybg},
+          {backgroundColor: ThemeMode.mode === 'light' ? AppBaseColor.pearlwhite : AppBaseColor.cardBg},
         ]}>
         <Text style={[styles.headertxt, {color: ThemeMode.primarytext}]}>
           {t('Apptitle')}
@@ -125,6 +130,7 @@ const LoginLanding = () => {
           mainStyle={{marginBottom: 5}}
           source={AppImages.google}
           title={t('Loginwithgoogle')}
+          loading = {Loading}
         />
         <SocialLogin
           tintcolor="white"

@@ -15,13 +15,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector} from 'react-redux';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {AppFontSize} from '../../../assets/Texts/Fontsize';
-interface ImagePicker{
-    selectedLanguage?:any
-    visible?:any
-    onclose?:any
-    onSelect?:any
-    onPress?:()=>void
-    onPress1?:()=>void
+interface ImagePicker {
+  selectedLanguage?: any;
+  visible?: any;
+  onclose?: any;
+  onSelect?: any;
+  onPress?: () => void;
+  onPress1?: () => void;
 }
 const ImagePickerModal = ({
   selectedLanguage,
@@ -29,7 +29,7 @@ const ImagePickerModal = ({
   onclose,
   onSelect,
   onPress,
-  onPress1
+  onPress1,
 }: ImagePicker) => {
   const ThemeMode = useSelector((state: any) => state.theme.mode);
 
@@ -55,8 +55,8 @@ const ImagePickerModal = ({
               width: '100%',
             }}>
             <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={onPress}
+              activeOpacity={0.8}
+              onPress={onPress}
               style={{
                 backgroundColor: ThemeMode.Darkbg,
                 elevation: 7,
@@ -69,7 +69,11 @@ const ImagePickerModal = ({
               <Image
                 resizeMode="contain"
                 style={{width: 40, height: 40}}
-                tintColor={ThemeMode.mode === 'light' ?  AppBaseColor.gray : AppBaseColor.white}
+                tintColor={
+                  ThemeMode.mode === 'light'
+                    ? AppBaseColor.gray
+                    : AppBaseColor.white
+                }
                 source={AppImages.camera}
               />
               <Text
@@ -82,8 +86,8 @@ const ImagePickerModal = ({
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={onPress1}
+              activeOpacity={0.8}
+              onPress={onPress1}
               style={{
                 backgroundColor: ThemeMode.Darkbg,
                 elevation: 7,
@@ -96,7 +100,11 @@ const ImagePickerModal = ({
               <Image
                 resizeMode="contain"
                 style={{width: 40, height: 40}}
-                tintColor={ThemeMode.mode === 'light' ?  AppBaseColor.gray : AppBaseColor.white}
+                tintColor={
+                  ThemeMode.mode === 'light'
+                    ? AppBaseColor.gray
+                    : AppBaseColor.white
+                }
                 source={AppImages.gallery}
               />
               <Text

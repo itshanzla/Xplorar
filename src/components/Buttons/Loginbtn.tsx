@@ -1,9 +1,10 @@
-import {Image, ImageProps, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, Image, ImageProps, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
 import { AppImages } from '../../../assets/images/AppImages';
 import { AppFontSize } from '../../../assets/Texts/Fontsize';
+import { useSelector } from 'react-redux';
 interface Loginbtn{
     title ?: string,
     source ?: ImageProps,
@@ -11,13 +12,19 @@ interface Loginbtn{
     mainStyle?: any,
     onpress?: ()=>void,
     btnStyle?: any ,
-    txtStyle ?: any
+    txtStyle ?: any,
+    Loading?:boolean
 }
-const Loginbtn = ({title,mainStyle,onpress,btnStyle,txtStyle} : Loginbtn) => {
+const Loginbtn = ({title,mainStyle,onpress,btnStyle,txtStyle,Loading} : Loginbtn) => {
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
   return (
     <View style={[styles.main,mainStyle]}>
       <TouchableOpacity onPress={onpress} activeOpacity={0.8} style={[styles.btn,btnStyle]}>
-        <Text style={[styles.txt,txtStyle]}>{title}</Text>
+        {
+          Loading ? <ActivityIndicator color={AppBaseColor.white} size={'small'} /> : 
+          <Text style={[styles.txt,txtStyle]}>{title}</Text>
+        }
+        
       </TouchableOpacity>
     </View>
   );

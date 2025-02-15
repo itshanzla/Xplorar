@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { AppBaseColor } from '../../../assets/Colors/Colors';
-import { AppImages } from '../../../assets/images/AppImages';
-import { Fonts } from '../../../android/app/src/main/assets/fonts/Fonts';
-import { AppFontSize } from '../../../assets/Texts/Fontsize';
-import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import {AppBaseColor} from '../../../assets/Colors/Colors';
+import {AppImages} from '../../../assets/images/AppImages';
+import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
+import {AppFontSize} from '../../../assets/Texts/Fontsize';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 interface CommonHeaderProps {
   title?: string;
@@ -30,16 +30,28 @@ const CommonHeader = ({
   onRightPress,
   rightComponent,
 }: CommonHeaderProps) => {
-  const navigation : any = useNavigation()
+  const navigation: any = useNavigation();
   const ThemeMode = useSelector((state: any) => state.theme.mode);
   return (
-    <View style={[styles.container,{backgroundColor:ThemeMode.primarybackground}]}>
+    <View
+      style={[
+        styles.container,
+        {backgroundColor: ThemeMode.primarybackground},
+      ]}>
       <StatusBar
-        backgroundColor={ThemeMode.mode === 'light' ? AppBaseColor.pearlwhite : ThemeMode.primarybackground}
-        barStyle={ThemeMode.mode === 'light' ?  'dark-content' : 'light-content'}
+        translucent={false}
+        backgroundColor={
+          ThemeMode.mode === 'light'
+            ? AppBaseColor.pearlwhite
+            : ThemeMode.primarybackground
+        }
+        barStyle={ThemeMode.mode === 'light' ? 'dark-content' : 'light-content'}
       />
       {showLeft && (
-        <TouchableOpacity activeOpacity={0.8} style={[styles.leftBtn,{backgroundColor:ThemeMode.primarycolor}]} onPress={()=>navigation.goBack()}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={[styles.leftBtn, {backgroundColor: ThemeMode.primarycolor}]}
+          onPress={() => navigation.goBack()}>
           <Image
             tintColor="white"
             resizeMode="contain"
@@ -48,11 +60,18 @@ const CommonHeader = ({
           />
         </TouchableOpacity>
       )}
-      <Text style={[styles.title,{color:ThemeMode.wnb}]}>{title}</Text>
+      <Text style={[styles.title, {color: ThemeMode.wnb}]}>{title}</Text>
       {showRight && (
-        <TouchableOpacity activeOpacity={0.8} style={[styles.rightBtn,{backgroundColor:ThemeMode.primarycolor}]} onPress={onRightPress}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={[styles.rightBtn, {backgroundColor: ThemeMode.primarycolor}]}
+          onPress={onRightPress}>
           {rightComponent || (
-            <Image style={styles.img} tintColor={'white'} source={AppImages.Search} />
+            <Image
+              style={styles.img}
+              tintColor={'white'}
+              source={AppImages.Search}
+            />
           )}
         </TouchableOpacity>
       )}
@@ -65,10 +84,10 @@ export default CommonHeader;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: AppBaseColor.pearlwhite,
-    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex:1
+    height: 60,
+    zIndex: 1,
   },
   title: {
     fontSize: AppFontSize.largetext,

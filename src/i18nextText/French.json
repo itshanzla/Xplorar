@@ -10,7 +10,7 @@
   "Apptitle": "Xplorer",
   "Description": "Découvrez le monde en toute simplicité et rendez chaque voyage inoubliable. Que vous planifiiez votre prochaine aventure ou que vous exploriez simplement les lieux à proximité",
   "LoginWithEmail": "Connectez-vous avec e-mail",
-  "DoesntHaveanAccount?": "Vous n'avez pas de compte ?",
+  "DoesntHaveanAccount": "Vous n'avez pas de compte ?",
   "login": "Se connecter",
   "signup": "S'inscrire",
   "Loginwithgoogle": "Connectez-vous avec Google",
