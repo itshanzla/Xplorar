@@ -1,30 +1,33 @@
 import { AppImages } from "../../../assets/images/AppImages";
-
 export default [
 
     {
         id:1,
-        title : "Discover Local Gems",
-        desc: "Explore hidden treasures around you, from serene parks to vibrant cultural hotspots. We curate personalized recommendations for must-visit locations nearby.",
-        image : AppImages.onboarding
+        title : "OnBoardHeader1",
+        desc: "OnBoardDesc1",
+        image : AppImages.onboarding,
+        darkimage: AppImages.darkonboard1
     },
     {
         id:2,
-        title : "Step into History",
-        desc: "Learn the rich history behind every destination. With just a tap, dive deep into stories of the past that shaped the places you visit.",
-        image : AppImages.onboarding3
+        title : "OnBoardHeader2",
+        desc: "OnBoardDesc2",
+        image : AppImages.onboarding3,
+        darkimage : AppImages.onboarding3
     },
     {
         id:3,
-        title : "Plan Your Next Adventure",
-        desc: "Craft your perfect travel itinerary. Set your travel goals, add places to your wishlist, and plan your next trip effortlessly.",
-        image : AppImages.onboarding2
+        title : "OnBoardHeader3",
+        desc: "OnBoardDesc3",
+        image : AppImages.onboarding2,
+        darkimage : AppImages.onboarding2
     },
     {
         id:4,
-        title : "Seamless Ticket Booking",
-        desc: " Book tickets for your favorite destinations directly from the app. Hassle-free planning, all in one place.",
-        image : AppImages.onboarding4
+        title : "OnBoardHeader4",
+        desc: "OnBoardDesc4",
+        image : AppImages.onboarding4,
+        darkimage : AppImages.onboarding4
     },
 
 ]

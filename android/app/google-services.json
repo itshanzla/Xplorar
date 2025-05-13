@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "38169461785",
+    "project_id": "xplorar-7821c",
+    "storage_bucket": "xplorar-7821c.appspot.com"
+  },
+  
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38169461785:android:af6b681696942d12a15688",
+        "android_client_info": {
+          "package_name": "com.xplorar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38169461785-c8hi1ub6m0ki85s53snef7eha88nlu03.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.xplorar",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "38169461785-24qgkg3offnihodecvfh7nj8vv477r1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI4GdKYFyyZKVinUJTRumrLc1r0f9r0Bs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38169461785-24qgkg3offnihodecvfh7nj8vv477r1n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

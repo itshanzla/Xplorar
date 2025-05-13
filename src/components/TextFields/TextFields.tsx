@@ -11,6 +11,7 @@ import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
 import {AppFontSize} from '../../../assets/Texts/Fontsize';
 import {AppImages} from '../../../assets/images/AppImages';
+import {useSelector} from 'react-redux';
 interface TextFields {
   Placeholder?: string;
   mainStyle?: any;
@@ -19,8 +20,9 @@ interface TextFields {
   ispassword?: boolean;
   secureTextEntry?: any;
   value?: string;
-  onChangeText?: () => void;
+  onChangeText?: any;
   onhide?: any;
+  placeholderTextColor?: any
 }
 
 const TextFields = ({
@@ -33,14 +35,23 @@ const TextFields = ({
   value,
   onChangeText,
   onhide,
+  placeholderTextColor
 }: TextFields) => {
   const [isfocus, setfocus] = useState<boolean>(false);
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
   return (
     <View style={[styles.main, mainStyle]}>
       <View
         style={[
           styles.inputmain,
-          {borderColor: isfocus ? AppBaseColor.blue : AppBaseColor.gray},
+          {
+            borderColor:
+              ThemeMode.mode === 'light' && isfocus
+                ? AppBaseColor.blue
+                : AppBaseColor.gray && ThemeMode.mode === 'dark' && isfocus
+                ? AppBaseColor.purple
+                : AppBaseColor.gray,
+          },
         ]}>
         {icons && (
           <TouchableOpacity>
@@ -53,12 +64,13 @@ const TextFields = ({
           </TouchableOpacity>
         )}
         <TextInput
-          placeholderTextColor={AppBaseColor.gray}
+          placeholderTextColor={placeholderTextColor}
           style={[
             styles.input,
             {
               paddingHorizontal: icons ? 5 : 0 || ispassword ? 10 : 0,
               width: icons && ispassword ? '83%' : '90%',
+              color:ThemeMode.mode === 'light' ? AppBaseColor.black : AppBaseColor.white
             },
           ]}
           placeholder={Placeholder}
@@ -75,7 +87,7 @@ const TextFields = ({
         {ispassword && (
           <TouchableOpacity activeOpacity={0.8} onPress={onhide}>
             <Image
-              tintColor={tintcolor}
+              tintColor={tintcolor ? tintcolor : 'white'}
               resizeMode="contain"
               style={[{width: 20, height: 20}]}
               source={secureTextEntry ? AppImages.closeeye : AppImages.openeye}

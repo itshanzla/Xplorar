@@ -4,15 +4,31 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import AuthStack from './src/views/AuthStack/AuthStack';
 import SplashScreen from './src/components/Splash/SplashScreen';
+import HomeStack from './src/views/HomeStack/HomeStack';
+import {useSelector} from 'react-redux';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
   const [initializing, setInitializing] = useState<boolean>(true);
-
+  const [User, SetUser] = useState<boolean>(false);
+  const UserID = useSelector((state: any) => state?.user?.accessToken);
+  const AccessToken = async () => {
+    console.dir('UserId is=>', await UserID);
+  };
+  useEffect(() => {
+    AccessToken();
+  }, []);
+  useEffect(() => {
+    if (UserID == null) {
+      SetUser(false);
+    } else {
+      SetUser(true);
+    }
+  }, [UserID]);
   useEffect(() => {
     setTimeout(() => {
       setInitializing(false);
-    }, 3000);
+    }, 2000);
   }, []);
 
   return (
@@ -20,8 +36,11 @@ const App = () => {
       {initializing ? (
         <SplashScreen />
       ) : (
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Navigator
+          initialRouteName={!User ? 'AuthStack' : 'HomeStack'}
+          screenOptions={{headerShown: false}}>
           <Stack.Screen name="AuthStack" component={AuthStack} />
+          <Stack.Screen name="HomeStack" component={HomeStack} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

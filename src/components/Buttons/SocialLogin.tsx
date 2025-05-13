@@ -1,21 +1,57 @@
-import {Image, ImageProps, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  ImageProps,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
-import { AppImages } from '../../../assets/images/AppImages';
-interface SocialLogin{
-    title ?: string,
-    source ?: ImageProps,
-    tintcolor?: any,
-    mainStyle?: any,
-    onPress?: ()=>void
+import {AppImages} from '../../../assets/images/AppImages';
+interface SocialLogin {
+  title?: string;
+  source?: ImageProps;
+  tintcolor?: any;
+  mainStyle?: any;
+  onPress?: () => void;
+  loading?: boolean;
 }
-const SocialLogin = ({title,source,tintcolor,mainStyle,onPress} : SocialLogin) => {
+const SocialLogin = ({
+  title,
+  source,
+  tintcolor,
+  mainStyle,
+  onPress,
+  loading,
+}: SocialLogin) => {
   return (
-    <View style={[styles.main,mainStyle]}>
-      <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.btn}>
-        <Image tintColor={tintcolor} resizeMode='contain' style={styles.icon} source={source}/>
-        <Text style={styles.txt}>{title}</Text>
+    <View style={[styles.main, mainStyle]}>
+      <TouchableOpacity
+        onPress={onPress}
+        activeOpacity={0.8}
+        style={styles.btn}>
+        {loading ? (
+          <ActivityIndicator color={'white'} size={'large'} />
+        ) : (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'row',
+            }}>
+            <Image
+              tintColor={tintcolor}
+              resizeMode="contain"
+              style={styles.icon}
+              source={source}
+            />
+            <Text style={styles.txt}>{title}</Text>
+          </View>
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -32,16 +68,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection:'row',
-    elevation:7
+    flexDirection: 'row',
+    elevation: 7,
   },
   txt: {
     color: AppBaseColor.white,
     fontFamily: Fonts.outfitmedium,
   },
-  icon:{
-    width:18,
-    height:18,
-    marginRight:10
-  }
+  icon: {
+    width: 18,
+    height: 18,
+    marginRight: 10,
+  },
 });

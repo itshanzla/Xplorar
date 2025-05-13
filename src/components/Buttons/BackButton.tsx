@@ -1,13 +1,16 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {AppImages} from '../../../assets/images/AppImages';
+import { useSelector } from 'react-redux';
 interface BackButton{
     tintColor?:any
     onPress?:()=>void
+    stylemain?: any
 }
-const BackButton = ({tintColor,onPress}:BackButton) => {
+const BackButton = ({tintColor,onPress,stylemain}:BackButton) => {
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={styles.btn}>
+    <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={[styles.btn,stylemain,{backgroundColor:ThemeMode.primarycolor}]}>
       <Image tintColor={tintColor} style={styles.img} source={AppImages.leftnav} />
     </TouchableOpacity>
   );
@@ -21,7 +24,6 @@ const styles = StyleSheet.create({
     height: 24,
   },
   btn: {
-    backgroundColor: 'white',
     alignSelf: 'flex-start',
     borderRadius: 100,
     height: 34,
@@ -32,5 +34,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     elevation: 7,
+    zIndex:1
   },
 });

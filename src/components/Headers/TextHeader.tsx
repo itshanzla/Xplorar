@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     fontSize: AppFontSize.mediumtxt,
     fontFamily: Fonts.outfitmedium,
-    marginHorizontal:10
+    marginHorizontal:10,
+    color:'black'
   },
 });

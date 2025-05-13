@@ -5,49 +5,71 @@ import LoginLanding from '../AuthScreens/LoginLanding';
 import LoginScreen from '../AuthScreens/LoginScreen';
 import OnBoarding from '../OnBoarding/OnBoarding';
 import SignupScreen from '../AuthScreens/SignupScreen';
-import SelectForgot from '../AuthScreens/ForgotPassword/01_SelectForgot';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
-import EmailVerify from '../AuthScreens/ForgotPassword/02_EmailVerify';
-import PhoneVerify from '../AuthScreens/ForgotPassword/02_PhoneVerify';
-import EmailCode from '../AuthScreens/ForgotPassword/03_EmailCode';
-import PhoneCode from '../AuthScreens/ForgotPassword/03_PhoneCode';
-import Resetpassword from '../AuthScreens/ForgotPassword/04_Resetpassword';
-import SuccessPassword from '../AuthScreens/ForgotPassword/05_SuccessPassword';
+import ForgotPassword from '../AuthScreens/ForgotPassword/ForgotPassword';
+import ResetPassword from '../AuthScreens/ForgotPassword/ResetPassword';
+import {useSelector} from 'react-redux';
+import SplashScreen from '../../components/Splash/SplashScreen';
 
 const Stack = createNativeStackNavigator();
-
-const AuthStack = () => {
+interface AuthStack {
+  ScreenLoading?: boolean;
+}
+const AuthStack = ({}: AuthStack) => {
   const [isFirstLaunch, setIsFirstLaunch] = useState<boolean | null>(null);
+  const [ScreenLoading, setScreenLoading] = useState<boolean>(true);
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
 
   useEffect(() => {
     const checkOnboarding = async () => {
-      const hasCompletedOnBoarding = await AsyncStorage.getItem('onBoardingCompleted');
-      if (hasCompletedOnBoarding === null) {
-        setIsFirstLaunch(true);
-      } else {
-        setIsFirstLaunch(false);
+      setScreenLoading(true);
+      try {
+        const hasCompletedOnBoarding = await AsyncStorage.getItem('onComplete');
+        if (hasCompletedOnBoarding != null) {
+          setIsFirstLaunch(true);
+        } else {
+          setIsFirstLaunch(false);
+        }
+        setTimeout(() => {
+          setScreenLoading(false);
+        }, 500);
+      } catch (error) {
+        setScreenLoading(false);
+        console.error('Error checking onboarding:', error);
       }
     };
     checkOnboarding();
   }, []);
 
   const completeOnboarding = async () => {
-    await AsyncStorage.setItem('onBoardingCompleted', 'true');
-    setIsFirstLaunch(false);
+    try {
+      await AsyncStorage.setItem('onComplete', 'true');
+      setIsFirstLaunch(false);
+    } catch (error) {
+      console.error('Error setting onboarding completed:', error);
+    }
   };
-
-  if (isFirstLaunch === null) {
+  if (ScreenLoading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size={'large'} color={AppBaseColor.blue} />
+      <View
+        style={[
+          styles.loadingContainer,
+          {
+            backgroundColor:
+              ThemeMode.mode === 'light'
+                ? AppBaseColor?.blue
+                : AppBaseColor?.darkprimary,
+          },
+        ]}>
+        <SplashScreen />
       </View>
     );
   }
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      {isFirstLaunch && (
+      {!isFirstLaunch && (
         <Stack.Screen name="OnBoarding">
           {props => <OnBoarding {...props} onComplete={completeOnboarding} />}
         </Stack.Screen>
@@ -55,13 +77,8 @@ const AuthStack = () => {
       <Stack.Screen name="LoginLanding" component={LoginLanding} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="SignupScreen" component={SignupScreen} />
-      <Stack.Screen name="SelectForgot" component={SelectForgot} />
-      <Stack.Screen name="EmailVerify" component={EmailVerify} />
-      <Stack.Screen name="PhoneVerify" component={PhoneVerify} />
-      <Stack.Screen name="EmailCode" component={EmailCode} />
-      <Stack.Screen name="PhoneCode" component={PhoneCode} />
-      <Stack.Screen name="ResetPassword" component={Resetpassword} />
-      <Stack.Screen name="SuccessPassword" component={SuccessPassword} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="ResetPassword" component={ResetPassword} />
     </Stack.Navigator>
   );
 };
@@ -73,6 +90,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
   },
 });

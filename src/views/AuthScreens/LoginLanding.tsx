@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   StatusBar,
@@ -6,35 +7,106 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {AppImages} from '../../../assets/images/AppImages';
 import {AppBaseColor} from '../../../assets/Colors/Colors';
 import {AppFontSize} from '../../../assets/Texts/Fontsize';
 import {Fonts} from '../../../android/app/src/main/assets/fonts/Fonts';
 import SocialLogin from '../../components/Buttons/SocialLogin';
 import Loginbtn from '../../components/Buttons/Loginbtn';
-import { useNavigation } from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import StatusBarTrans from '../../components/StatusBar/StatusBarTrans';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import {addData, setUser} from '../Redux/AuthSlice';
+import {useTranslation} from 'react-i18next';
 
+GoogleSignin.configure({
+  webClientId:
+    '38169461785-24qgkg3offnihodecvfh7nj8vv477r1n.apps.googleusercontent.com',
+});
 const LoginLanding = () => {
-  const navigation : any = useNavigation()
+  const navigation: any = useNavigation();
+  const [Loading,setisLoading] = useState<any>(false)
+  const ThemeMode = useSelector((state: any) => state.theme.mode);
+  const {t} = useTranslation();
+  const dispatch = useDispatch();
+  const [showToast, setShowToast] = useState<boolean>(false);
+  // const [Toastmsg, setToastmsg] = useState<any>('');
+  // const visibleToast = (message: any) => {
+  //   setToastmsg(message);
+  //   setShowToast(true);
+  //   setTimeout(() => {
+  //     setShowToast(false);
+  //   }, 3000);
+  // };
+  const onGoogleButtonPress = async () => {
+    try {
+      setisLoading(true)
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+      const idToken: any = (await GoogleSignin.signIn()).data?.idToken;
+      const user: any = (await GoogleSignin.signIn()).data?.user;
+      if (!idToken) {
+        throw new Error('No ID token received. Sign-in might have failed.');
+      }
+      const userdata = {
+        first_name: user?.name,
+        Email: user?.email,
+        pic: user?.photo,
+      };
+      const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
+      dispatch(setUser(idToken));
+      dispatch(addData(userdata));
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'HomeStack'}],
+        }),
+      );
+      setisLoading(false)
+      return auth().signInWithCredential(googleCredentials);
+    } catch (err: any) {
+      setisLoading(false)
+      console.error(err);
+    }
+  };
+
   return (
     <View style={styles.main}>
       <StatusBarTrans />
+      
       <Image
         resizeMode="cover"
         style={styles.img}
-        source={AppImages.loginback}
+        source={
+          ThemeMode.mode === 'light' ? AppImages.loginback : AppImages.darkbg1
+        }
       />
-      <View style={styles.ChildContainer}>
-        <Text style={styles.headertxt}>Xplorer</Text>
-        <Text style={styles.desc}>
-          Discover the world with ease and make every journey unforgettable.
-          Whether you're planning your next adventure or just exploring nearby
-          spots
+      <View
+        style={[
+          styles.ChildContainer,
+          {backgroundColor: ThemeMode.mode === 'light' ? AppBaseColor.pearlwhite : AppBaseColor.cardBg},
+        ]}>
+        <Text style={[styles.headertxt, {color: ThemeMode.primarytext}]}>
+          {t('Apptitle')}
         </Text>
-        <Loginbtn onpress={()=>navigation.navigate('LoginScreen')}  mainStyle={{marginBottom: 20}} title="Login with Email" />
-        <Text style={{marginTop:10,fontSize:AppFontSize.smalltxt,fontFamily:Fonts.outfitRegular,color:AppBaseColor.black,alignSelf:'center'}}>{'Doesn\'t Have an Account?\t'}<Text onPress={()=>navigation.navigate('SignupScreen')} style={{color:AppBaseColor.blue}}>Signup</Text></Text>
+        <Text style={[styles.desc, {color: ThemeMode.secondrytext}]}>
+          {t('Description')}
+        </Text>
+        <Loginbtn
+          onpress={() => navigation.navigate('LoginScreen')}
+          mainStyle={{marginBottom: 20}}
+          title={t('LoginWithEmail')}
+        />
+        <Text style={[styles.txt2,{color: ThemeMode.secondrytext}]}>
+          {t('DoesntHaveanAccount')}{' '}
+          <Text
+            onPress={() => navigation.navigate('SignupScreen')}
+            style={[{color: ThemeMode.primarycolor}]}>
+            {t('signup')}
+          </Text>
+        </Text>
         <View
           style={{
             flexDirection: 'row',
@@ -54,16 +126,21 @@ const LoginLanding = () => {
           <View style={styles.lineView} />
         </View>
         <SocialLogin
+          onPress={() => onGoogleButtonPress()}
           mainStyle={{marginBottom: 5}}
           source={AppImages.google}
-          title="Login With Google"
+          title={t('Loginwithgoogle')}
+          loading = {Loading}
         />
         <SocialLogin
           tintcolor="white"
           source={AppImages.apple}
-          title="Login With Apple"
+          title={t('Loginwithapple')}
         />
       </View>
+      {/* <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <NotifyToast message={Toastmsg} visible={showToast} type={'ERROR'} />
+      </View> */}
     </View>
   );
 };
@@ -79,9 +156,8 @@ const styles = StyleSheet.create({
     height: 320,
   },
   ChildContainer: {
-    backgroundColor: AppBaseColor.white,
     height: '100%',
-    marginTop: -20,
+    marginTop: '-15%',
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
   },
@@ -89,7 +165,7 @@ const styles = StyleSheet.create({
     fontSize: AppFontSize.header,
     textAlign: 'center',
     fontFamily: Fonts.outfitBold,
-    color: AppBaseColor.black,
+
     paddingTop: 10,
   },
   desc: {
@@ -105,5 +181,11 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: AppBaseColor.gray,
     marginVertical: 20,
+  },
+  txt2: {
+    marginTop: 10,
+    fontSize: AppFontSize.smalltxt,
+    fontFamily: Fonts.outfitRegular,
+    alignSelf: 'center',
   },
 });

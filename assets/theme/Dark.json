@@ -1,0 +1,19 @@
+{
+  "mode": "dark",
+  "primarybackground": "#1B0D35",
+  "secondrybg": "#352454",
+  "primarycolor": "#9389A0",
+  "primarytext": "#FFFFFF",
+  "secondrytext": "#E7E4F0",
+  "secondrycolor" : "#E2E9FF",
+  "black": "#333333",
+  "white": "#FFFFFF",
+  "wngray" : "#FFFFFF",
+  "wnb" : "#FFFFFF",
+  "modeicon": "#E2E9FF",
+  "icon": "#f8f9fa",
+  "firsttxt": "#C9BFB5",
+  "secondtxt": "#E2E9FF",
+  "Darkbg" : "#352454",
+  "borderColor":"#C5C0D1"
+}
