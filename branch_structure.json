@@ -1,0 +1,21 @@
+{
+  "default_branch": "Main",
+  "branches": [
+    "AIXplorarStack",
+    "AuthUI",
+    "HomeStack",
+    "Main"
+  ],
+  "parent": {
+    "AIXplorarStack": "Main",
+    "AuthUI": "Main",
+    "HomeStack": "Main",
+    "Main": null
+  },
+  "order": [
+    "Main",
+    "AIXplorarStack",
+    "AuthUI",
+    "HomeStack"
+  ]
+}
