@@ -25,12 +25,6 @@
 // // Step 4: Wrap the final config with Reanimated's config
 // module.exports = wrapWithReanimatedMetroConfig(config);
 
-
-
-
-
-
-
 const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 
 /**
